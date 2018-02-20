@@ -7,6 +7,10 @@ def generateElements():
 
 def createBoard():
     board = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
-    print(board)
+    numbersForTheBoard = generateElements()
+    for row in range(4):
+        for column in range(4):
+            board[row][column] = numbersForTheBoard.pop(0)
+        print(board[row])
 
 createBoard()
