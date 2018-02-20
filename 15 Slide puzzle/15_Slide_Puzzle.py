@@ -11,6 +11,10 @@ def createBoard():
     for row in range(4):
         for column in range(4):
             board[row][column] = numbersForTheBoard.pop(0)
+            print(board[row][column],end=" ")
+        print()
+    print()
+    for row in range(4):
         print(board[row])
 
 createBoard()
