@@ -5,3 +5,8 @@ def generateElements():
     shuffle(elements)
     return elements
 
+def createBoard():
+    board = [[0 for i in range(4)] for j in range(4)]
+    print(board)
+
+createBoard()
