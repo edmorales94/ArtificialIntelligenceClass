@@ -6,7 +6,7 @@ def generateElements():
     return elements
 
 def createBoard():
-    board = [[0 for i in range(4)] for j in range(4)]
+    board = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
     print(board)
 
 createBoard()
