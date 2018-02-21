@@ -12,7 +12,7 @@ class SlidePuzzle:
     """---------- generate_elements method --------------------------------------------------------------------------"""
     def generate_elements(self):
         self.sequence = list(range(1, 17))  # a list from 1 to 16
-        random.shuffle(self.sequence)
+        #random.shuffle(self.sequence)
         return self.sequence  # return the numbers from 1 to 16
 
     """---------- createBoard method---------------------------------------------------------------------------------"""
@@ -26,13 +26,11 @@ class SlidePuzzle:
                     print(str(self.board[row][column]) + "  ", end=" ")
                 else:
                     print(str(self.board[row][column]) + " ", end=" ")
-
-                if self.board[row][column] == 16:
-                    self.emptyBlockCoordinates = [row, column]
             print()
         print()
         """for row in range(4):
             print(self.board[row])  # print each row"""
+        self.emptyBlockCoordinates = [3, 3]
         print("This is the initial empty block location: ", self.emptyBlockCoordinates)  # row, column
 
     """---------- moveUp method -------------------------------------------------------------------------------------"""
@@ -83,6 +81,18 @@ class SlidePuzzle:
         except IndexError:
             print("Can't go to the left. Empty block is in the leftmost column")
 
+    """---------- shuffle method ------------------------------------------------------------------------------------"""
+    def shuffle_board(self):
+        for i in range(150):
+            direction = random.randrange(1, 5)
+            if direction == 1:
+                self.move_up()
+            elif direction == 2:
+                self.move_right()
+            elif direction == 3:
+                self.move_down()
+            elif direction == 4:
+                self.move_left()
     """---------- print_board ---------------------------------------------------------------------------------------"""
     def print_board(self):
         for row in range(4):  # go through each row
@@ -93,7 +103,7 @@ class SlidePuzzle:
                 else:
                     print(str(self.board[row][column]) + " ", end=" ")
             print()
-        print()
+        print("\nThis is the empty block's location: ", self.emptyBlockCoordinates)
 
     """---------- bfs method ----------------------------------------------------------------------------------------"""
     def bfs(self):
@@ -108,10 +118,7 @@ class SlidePuzzle:
 def main():
     board = SlidePuzzle()
     board.create_board()
-    board.move_up()
-    board.move_left()
-    board.move_down()
-    board.move_right()
+    board.shuffle_board()
     board.print_board()
     print(board.create_queue())
 
