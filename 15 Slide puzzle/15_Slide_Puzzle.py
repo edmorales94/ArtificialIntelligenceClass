@@ -93,6 +93,21 @@ class SlidePuzzle:
                 self.move_down()
             elif direction == 4:
                 self.move_left()
+
+    """---------- convert_to_tuple ----------------------------------------------------------------------------------"""
+    def convert_to_tuple(self, board):
+        result = []
+        for i in board:
+            result.append(tuple(i))
+        return tuple(result)
+
+    """---------- convert to list -----------------------------------------------------------------------------------"""
+    def convert_to_list(self, tuple):
+        result = []
+        for i in tuple:
+            result.append(list(i))
+        return result
+
     """---------- print_board ---------------------------------------------------------------------------------------"""
     def print_board(self):
         for row in range(4):  # go through each row
@@ -112,6 +127,7 @@ class SlidePuzzle:
     def create_queue(self):
         my_queue = queue.Queue()
         my_queue.put(1)
+        start = self.convert_to_tuple(self.board)
         return  my_queue.get()
 
 
@@ -121,6 +137,5 @@ def main():
     board.shuffle_board()
     board.print_board()
     print(board.create_queue())
-
 
 main()
