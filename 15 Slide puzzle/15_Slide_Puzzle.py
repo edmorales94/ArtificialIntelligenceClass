@@ -39,6 +39,16 @@ class SlidePuzzle:
         except IndexError:
             print("Can't go up. Empty block is in the first row")
 
+#---------- MoveRight method -------------------------------------------------------------------------------------------
+    def moveRight(self):
+        try:
+            if self.emptyBlockCoordinates[1]!= 3:
+                temp = self.board[self.emptyBlockCoordinates[0][self.emptyBlockCoordinates[1]+1]]
+                self.board[self.emptyBlockCoordinates[0][self.emptyBlockCoordinates[1] + 1]] = 16
+                self.board[self.emptyBlockCoordinates[0]][self.emptyBlockCoordinates[1]] = temp
+                self.emptyBlockCoordinates = [self.emptyBlockCoordinates[0], self.emptyBlockCoordinates[1]+1]
+        except IndexError:
+            print("can't go to the right. Empty block is in the rightmost column")
 
 def main():
     board = SlidePuzzle()
