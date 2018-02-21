@@ -66,7 +66,18 @@ class SlidePuzzle:
                 self.board[self.emptyBlockCoordinates[0]][self.emptyBlockCoordinates[1]] = temp
                 self.emptyBlockCoordinates = [self.emptyBlockCoordinates[0]+1, self.emptyBlockCoordinates[1]]
         except IndexError:
-            print("can't go to the down. Empty block is in the last row")
+            print("can't go down. Empty block is in the last row")
+
+    """---------- move_left method ----------------------------------------------------------------------------------"""
+    def move_left(self):
+        try:
+            if self.emptyBlockCoordinates[1] != 0:
+                temp = self.board[self.emptyBlockCoordinates[0]][self.emptyBlockCoordinates[1]-1]
+                self.board[self.emptyBlockCoordinates[0]][self.emptyBlockCoordinates[1]-1] = 16
+                self.board[self.emptyBlockCoordinates[0]][self.emptyBlockCoordinates[1]] = temp
+                self.emptyBlockCoordinates = [self.emptyBlockCoordinates[0], self.emptyBlockCoordinates[1]-1]
+        except IndexError:
+            print("Can't go to the left. Empty block is in the leftmost column")
 
 
 def main():
