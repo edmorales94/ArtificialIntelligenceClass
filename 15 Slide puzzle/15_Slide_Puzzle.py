@@ -1,3 +1,6 @@
+import random
+
+
 class SlidePuzzle:
     board = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]  # initial board
     sequence = []
@@ -8,7 +11,7 @@ class SlidePuzzle:
     """---------- generate_elements method --------------------------------------------------------------------------"""
     def generate_elements(self):
         self.sequence = list(range(1, 17))  # a list from 1 to 16
-        # shuffle(self.elements)
+        random.shuffle(self.sequence)
         return self.sequence  # return the numbers from 1 to 16
 
     """---------- createBoard method---------------------------------------------------------------------------------"""
@@ -22,15 +25,16 @@ class SlidePuzzle:
                     print(str(self.board[row][column]) + "  ", end=" ")
                 else:
                     print(str(self.board[row][column]) + " ", end=" ")
+
+                if self.board[row][column] == 16:
+                    self.emptyBlockCoordinates = [row, column]
             print()
         print()
-        for row in range(4):
-            print(self.board[row])  # print each row
-        self.emptyBlockCoordinates = [3, 3]  # row, column
-        print("\nWe want this board: ", self.goalBoard)
+        """for row in range(4):
+            print(self.board[row])  # print each row"""
+        print("This is the initial empty block location: ", self.emptyBlockCoordinates)  # row, column
 
     """---------- moveUp method -------------------------------------------------------------------------------------"""
-
     def move_up(self):
         try:
             if self.emptyBlockCoordinates[0] != 0:
@@ -46,12 +50,11 @@ class SlidePuzzle:
             print("Can't go up. Empty block is in the first row")
 
     """---------- MoveRight method ----------------------------------------------------------------------------------"""
-
     def move_right(self):
         try:
             if self.emptyBlockCoordinates[1] != 3:
-                temp = self.board[self.emptyBlockCoordinates[0][self.emptyBlockCoordinates[1] + 1]]
-                self.board[self.emptyBlockCoordinates[0][self.emptyBlockCoordinates[1] + 1]] = 16
+                temp = self.board[self.emptyBlockCoordinates[0]][self.emptyBlockCoordinates[1]+1]
+                self.board[self.emptyBlockCoordinates[0]][self.emptyBlockCoordinates[1] + 1] = 16
                 self.board[self.emptyBlockCoordinates[0]][self.emptyBlockCoordinates[1]] = temp
                 self.emptyBlockCoordinates = [self.emptyBlockCoordinates[0], self.emptyBlockCoordinates[1] + 1]
         except IndexError:
@@ -79,10 +82,27 @@ class SlidePuzzle:
         except IndexError:
             print("Can't go to the left. Empty block is in the leftmost column")
 
+    """---------- print_board ---------------------------------------------------------------------------------------"""
+    def print_board(self):
+        for row in range(4):  # go through each row
+            for column in range(4):  # visit each column in the row
+                # This is just for printing preferences
+                if len(str(self.board[row][column])) == 1:
+                    print(str(self.board[row][column]) + "  ", end=" ")
+                else:
+                    print(str(self.board[row][column]) + " ", end=" ")
+            print()
+        print()
+
 
 def main():
     board = SlidePuzzle()
     board.create_board()
+    board.move_up()
+    board.move_left()
+    board.move_down()
+    board.move_right()
+    board.print_board()
 
 
 main()
