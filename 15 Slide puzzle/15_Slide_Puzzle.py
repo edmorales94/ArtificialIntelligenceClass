@@ -108,6 +108,21 @@ class SlidePuzzle:
             result.append(list(i))
         return result
 
+    """---------- match method --------------------------------------------------------------------------------------"""
+    def match(self, copyBoard):
+        a = SlidePuzzle()
+        a.create_board()
+        a.board = copyBoard
+        for row in range(4):
+            for column in range(4):
+                if a.board[row][column] == 16:
+                    a.emptyBlockCoordinates = [row, column]
+        result = []
+        for i in a.board:
+            result.append(list(i))
+        a.board = result
+        return a
+
     """---------- print_board ---------------------------------------------------------------------------------------"""
     def print_board(self):
         for row in range(4):  # go through each row
