@@ -1,4 +1,5 @@
 import random
+import queue
 
 
 class SlidePuzzle:
@@ -94,6 +95,9 @@ class SlidePuzzle:
             print()
         print()
 
+    """---------- bfs method ----------------------------------------------------------------------------------------"""
+    def bfs(self):
+        pass
 
 def main():
     board = SlidePuzzle()
