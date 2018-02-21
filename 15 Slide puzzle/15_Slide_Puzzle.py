@@ -99,6 +99,12 @@ class SlidePuzzle:
     def bfs(self):
         pass
 
+    def create_queue(self):
+        my_queue = queue.Queue()
+        my_queue.put(1)
+        return  my_queue.get()
+
+
 def main():
     board = SlidePuzzle()
     board.create_board()
@@ -107,6 +113,7 @@ def main():
     board.move_down()
     board.move_right()
     board.print_board()
+    print(board.create_queue())
 
 
 main()
