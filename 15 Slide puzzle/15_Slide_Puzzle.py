@@ -109,10 +109,10 @@ class SlidePuzzle:
         return result
 
     """---------- match method --------------------------------------------------------------------------------------"""
-    def match(self, copyBoard):
+    def match(self, copy_board):
         a = SlidePuzzle()
         a.create_board()
-        a.board = copyBoard
+        a.board = copy_board
         for row in range(4):
             for column in range(4):
                 if a.board[row][column] == 16:
@@ -137,12 +137,37 @@ class SlidePuzzle:
 
     """---------- bfs method ----------------------------------------------------------------------------------------"""
     def bfs(self):
-        pass
+        startingPuzzle = self.convert_to_tuple(self.board)
+        predictionForDirections = {}
+        nodesVisited = []
+        nodesToExplore = queue.Queue()
+        nodesToExplore.put(startingPuzzle)
+
+        while nodesToExplore.qsize() >0:
+            temp = nodesToExplore.get()#get the first node in the queue(FIFO)
+
+            if temp == self.goalBoard:
+                path = []
+                while temp != startingPuzzle:
+                    path.append(predictionForDirections[temp][1])
+                    temp = predictionForDirections[temp][0]
+                return path[::-1]
+
+            if temp not in nodesVisited:
+                nodesVisited.append(temp)
+                temporary_board = self.match(temp)
+                temporary_board.move_up()
+                if self.convert_to_tuple(temporary_board) != temp:
+                    nodesToExplore.put(self.convert_to_tuple(temporary_board))
+                    if self.convert_to_tuple(temporary_board) not in predictionForDirections.keys():
+                        predictionForDirections[self.convert_to_tuple()] = [temporary_board, "up"]
+
+
+
 
     def create_queue(self):
         my_queue = queue.Queue()
         my_queue.put(1)
-        start = self.convert_to_tuple(self.board)
         return  my_queue.get()
 
 
