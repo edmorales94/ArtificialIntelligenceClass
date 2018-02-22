@@ -114,7 +114,7 @@ class slidePuzzle:
                     allowed_moves.append(piece)
         return allowed_moves
 
-    """------ visit method --------------------------------------------------"""
+    """---------- visit method ----------------------------------------------"""
     def visit(self):
         children = []
         allowed_moves = self.get_allowed_movements()
@@ -126,7 +126,19 @@ class slidePuzzle:
                 new_board.path.append(move)
                 children.append(new_board)
         return children
-    
+
+    """---------- Breath First Search method --------------------------------"""
+    def bfs(self):
+        starting_state = self.get_a_copy_of_the_board()
+        starting_state.path = []
+        stages = [starting_state]
+
+        while len(stages) > 0:
+            state = stages[0]
+            stages.pop(0)
+            if state.is_goal_state_reached():
+                return state.path
+            
 """---------- main ----------------------------------------------------------"""
 def main():
     board = slidePuzzle()
