@@ -10,10 +10,6 @@ class slidePuzzle:
         for row in range(4):
             self.board.append([])
             for col in range(4):
-                if row == 3 and col == 3:
-                   self.board[row].append(0)
-
-                else:
                    self.board[row].append(4 * row + col + 1)
 
     """---------- print board method ----------------------------------------"""
@@ -37,7 +33,10 @@ class slidePuzzle:
                     print("Black space location: ", [i,j])
                     return [i,j]
                 
-
+    """---------- swap elements method --------------------------------------"""
+    def swap_items(self, row1, column1, row2, column2):
+        pass
+        
 """---------- main ----------------------------------------------------------"""
 def main():
     board = slidePuzzle()
