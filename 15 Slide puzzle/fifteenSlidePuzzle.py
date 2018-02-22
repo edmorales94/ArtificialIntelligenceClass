@@ -132,6 +132,7 @@ class SlidePuzzle:
                 return state.path
             states = states + state.visit()
 
+
     def shuffle(self):
         self.move(12)
 
