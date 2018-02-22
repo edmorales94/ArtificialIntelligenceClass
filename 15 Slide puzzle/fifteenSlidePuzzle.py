@@ -1,18 +1,27 @@
+import random
+
+
 class SlidePuzzle:
     direction = {"LEFT": "l", "RIGHT": "r", "UP": "u", "DOWN": "d"}
+    board = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
     path = []
     solvePuzzleUsingMethod = ""
     lastMove = ""
+    numbers = []
 
     """---------- constructor -----------------------------------------------"""
     def __init__(self):
-        self.board = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
         i = 1
         for row in range(4):
             for column in range(4):
                 self.board[row][column] = i
                 i += 1
 
+    """---------- generate numbers-------------------------------------------"""
+    def generate_numbers(self):
+        numbers = list(range(1, 17))
+        random.shuffle(numbers)
+        return numbers
     """---------- print board method ----------------------------------------"""
     def print_board(self):
         string = ""
@@ -119,25 +128,32 @@ class SlidePuzzle:
 
     """---------- Breath First Search method --------------------------------"""
     def bfs(self):
+        my_file = open("result.txt", "w+")
+        my_file.write("Board:\n")
+        self.numbers = self.generate_numbers()
+        for i in range(4):
+            for j in range(4):
+                self.board[i][j] = self.numbers.pop(0)
+                if i == 3 and j == 3:
+                    my_file.write(str(self.board[i][j]))#no extra espace at the last number
+                else:
+                    my_file.write(str(self.board[i][j]) + " ")
+        self.print_board()
         starting_state = self.get_a_copy_of_the_board()
         starting_state.path = []
         states = [starting_state]
 
-        while len(states) > 0:
+        i = 0
+        while i < 15:
             state = states.pop(0)
-            #states = stages[1::]
             if state.is_goal_state_reached():
                 print("board is solved")
                 state.print_board()
+                my_file.close()
                 return state.path
             states = states + state.visit()
-
-
-    def shuffle(self):
-        self.move(12)
-
-    def solve(self):
-        self.bfs()
+            i += 1
+        print("15 steps wasn't enough to find a solution for the puzzle")
 
 
 """---------- main ----------------------------------------------------------"""
@@ -145,9 +161,6 @@ class SlidePuzzle:
 
 def main():
     board = SlidePuzzle()
-    board.print_board()
-    board.shuffle()
-    #board.print_board()
     board.bfs()
 
 
