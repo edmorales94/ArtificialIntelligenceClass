@@ -102,8 +102,31 @@ class slidePuzzle:
         for i in range(len(self.path)):
             copy_of_puzzle.path.append(self.path[row])
         return copy_of_puzzle
-        
-        
+
+
+    """---------- get all allowed movements ---------------------------------"""
+    def get_allowed_movements(self):
+        allowed_moves = []
+        for row in range(4):
+            for column in range(4):
+                piece = self.board[row][column]
+                if not self.where_to_move_blank_space(piece) is None:
+                    allowed_moves.append(piece)
+        return allowed_moves
+
+    """------ visit method --------------------------------------------------"""
+    def visit(self):
+        children = []
+        allowed_moves = self.get_allowed_movements()
+        for i in range(len(allowed_moves)):
+            move = allowed_moves[i]
+            if move != self.lastMove:
+                new_board = self.get_a_copy_of_the_board()
+                new_board.move(move)
+                new_board.path.append(move)
+                children.append(new_board)
+        return children
+    
 """---------- main ----------------------------------------------------------"""
 def main():
     board = slidePuzzle()
