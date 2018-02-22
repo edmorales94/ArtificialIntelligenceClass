@@ -33,11 +33,29 @@ class slidePuzzle:
                     print("Black space location: ", [i,j])
                     return [i,j]
                 
+
     """---------- swap elements method --------------------------------------"""
     def swap_items(self, row1, column1, row2, column2):
         temp = self.board[row1][column1]
         self.board[row1][column1] = self.board[row2][column2]
         self.board[row2][column2] = temp
+
+
+    """---------- get move method -------------------------------------------"""
+    def get_move(self, piece_to_move):
+        blank_position = self.get_blank_space_position()
+        row = blank_position[0]
+        column = blank_position[1]
+        if row > 0 and piece_to_move == self.board[row-1][column]:
+            return self.direction["UP"]
+        elif column < 3 and piece_to_move == self.board[row][column +1]:
+            return self.direction["RIGHT"]
+        elif row < 3 and piece_to_move == self.board[row + 1][column]:
+            return self.direction["DOWN"]
+        elif column > 0 and piece_to_move == self.board[row][column -1]:
+            return self.direction["LEFT"]
+
+    
         
 """---------- main ----------------------------------------------------------"""
 def main():
