@@ -1,3 +1,6 @@
+import math
+
+
 class slidePuzzle:
     direction = {"LEFT": "l", "RIGHT": "r", "UP":"u", "DOWN": "d"}
     board = []
@@ -63,6 +66,33 @@ class slidePuzzle:
         if not move is None:
             blank_space_position = self.get_blank_space_position()
             row = blank_space_position[0]
+            column = blank_space_position[1]
+            if move == "u":
+                self.swap_items(row,column,row-1,column)
+            elif move == "r":
+                self.swap_items(row,column,row, column+1)
+            elif move == "d":
+                self.swap_items(row, column, row+1, column)
+            elif move == "l":
+                self.swap_items(row, column, row, column-1)
+
+
+            self.lastMove = piece_to_move
+            return move
+
+    """---------- is goal state method --------------------------------------"""
+    def is_goal_state_reached(self):
+        for row in range(4):
+            for column in range(4):
+                piece = self.board[row][column]
+                if piece != 16:
+                    original_row = math.floor((piece-1)/4)
+                    orignal_column = (piece-1)%4
+                    if row != original_row or column != original_column:
+                        return False
+        return True
+
+    
         
         
 """---------- main ----------------------------------------------------------"""
