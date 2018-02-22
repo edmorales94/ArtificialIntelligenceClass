@@ -98,8 +98,8 @@ class SlidePuzzle:
     """---------- convert_to_tuple ----------------------------------------------------------------------------------"""
     def convert_to_tuple(self, board):
         result = []
-        for i in board:
-            result.append(tuple(i))
+        for i in range(4):
+            result.append(board[i])
         return tuple(result)
 
     """---------- convert to list -----------------------------------------------------------------------------------"""
@@ -144,8 +144,8 @@ class SlidePuzzle:
         nodesToExplore = queue.Queue()
         nodesToExplore.put(startingPuzzle)
 
-        while nodesToExplore.qsize() >0:
-            temp = nodesToExplore.get()#get the first node in the queue(FIFO)
+        while nodesToExplore.qsize() > 0:
+            temp = nodesToExplore.get()  # get the first node in the queue(FIFO)
 
             if temp == self.goalBoard:
                 path = []
@@ -161,22 +161,34 @@ class SlidePuzzle:
                 if self.convert_to_tuple(temporary_board) != temp:
                     nodesToExplore.put(self.convert_to_tuple(temporary_board))
                     if self.convert_to_tuple(temporary_board) not in predictionForDirections.keys():
-                        predictionForDirections[self.convert_to_tuple()] = [temporary_board, "up"]
+                        predictionForDirections[self.convert_to_tuple(temporary_board.board)] = [temporary_board, "up"]
 
+                temporary_board = self.match(temp)
+                temporary_board.move_down()
+                if self.convert_to_tuple(temporary_board.board) != temp:
+                    nodesToExplore.put(self.convert_to_tuple(temporary_board.board))
+                    if self.convert_to_tuple(temporary_board) not in predictionForDirections.keys():
+                        predictionForDirections[self.convert_to_tuple(temporary_board.board)] = [temp, "down"]
 
+                temporary_board = self.match(temp)
+                temporary_board.move_right()
+                if self.convert_to_tuple(temporary_board.board) != temp:
+                    nodesToExplore.put(self.convert_to_tuple(temporary_board.board))
+                    if self.convert_to_tuple(temporary_board) not in predictionForDirections.keys():
+                        predictionForDirections[self.convert_to_tuple(temporary_board.board)] = [temp, "right"]
 
-
-    def create_queue(self):
-        my_queue = queue.Queue()
-        my_queue.put(1)
-        return  my_queue.get()
-
-
+                temporary_board = self.match(temp)
+                temporary_board.move_left()
+                if self.convert_to_tuple(temporary_board.board) != temp:
+                    nodesToExplore.put(self.convert_to_tuple(temporary_board.board))
+                    if self.convert_to_tuple(temporary_board) not in predictionForDirections.keys():
+                        predictionForDirections[self.convert_to_tuple(temporary_board.board)] = [temp, "left"]
 def main():
     board = SlidePuzzle()
     board.create_board()
     board.shuffle_board()
     board.print_board()
-    print(board.create_queue())
+    print(board.bfs())
+
 
 main()
