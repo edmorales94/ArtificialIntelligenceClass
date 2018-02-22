@@ -42,7 +42,7 @@ class slidePuzzle:
 
 
     """---------- get move method -------------------------------------------"""
-    def get_move(self, piece_to_move):
+    def where_to_move_blank_space(self, piece_to_move):
         blank_position = self.get_blank_space_position()
         row = blank_position[0]
         column = blank_position[1]
@@ -55,7 +55,15 @@ class slidePuzzle:
         elif column > 0 and piece_to_move == self.board[row][column -1]:
             return self.direction["LEFT"]
 
-    
+
+    """---------- move blank space method -----------------------------------"""
+    def move(self, piece_to_move):
+        move = self.where_to_move__blank_space(piece_to_move)
+
+        if not move is None:
+            blank_space_position = self.get_blank_space_position()
+            row = blank_space_position[0]
+        
         
 """---------- main ----------------------------------------------------------"""
 def main():
