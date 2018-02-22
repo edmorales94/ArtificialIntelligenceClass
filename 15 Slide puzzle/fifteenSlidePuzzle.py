@@ -29,13 +29,15 @@ class slidePuzzle:
     def get_blank_space_position(self):
         for i in range(4):
             for j in range(4):
-                if self.board[i][j] == 0:
+                if self.board[i][j] == 16:
                     print("Black space location: ", [i,j])
                     return [i,j]
                 
     """---------- swap elements method --------------------------------------"""
     def swap_items(self, row1, column1, row2, column2):
-        pass
+        temp = self.board[row1][column1]
+        self.board[row1][column1] = self.board[row2][column2]
+        self.board[row2][column2] = temp
         
 """---------- main ----------------------------------------------------------"""
 def main():
