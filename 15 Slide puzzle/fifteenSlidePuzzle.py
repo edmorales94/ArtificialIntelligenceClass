@@ -92,7 +92,16 @@ class slidePuzzle:
                         return False
         return True
 
-    
+    """---------- get a copy of board method --------------------------------"""
+    def get_a_copy_of_the_board(self):
+        copy_of_puzzle = slidePuzzle()
+        for row in range(4):
+            for column in range(4):
+                copy_of_puzzle.board[row][column] = self.board[row][column]
+
+        for i in range(len(self.path)):
+            copy_of_puzzle.path.append(self.path[row])
+        return copy_of_puzzle
         
         
 """---------- main ----------------------------------------------------------"""
