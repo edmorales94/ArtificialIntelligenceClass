@@ -76,7 +76,7 @@ class SlidePuzzle:
 
     """---------- is goal state method --------------------------------------"""
     def is_goal_state_reached(self):
-        goal = [[1,2,3,4], [5,6,7,8], [9,10,11,12], [13,14,15,16]]
+        goal = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
         for row in range(4):
             for column in range(4):
                 if self.board[row][column] != goal[row][column]:
@@ -132,6 +132,7 @@ class SlidePuzzle:
 
     def shuffle(self):
         self.move(12)
+
     def solve(self):
         print(self.bfs())
 
@@ -146,5 +147,6 @@ def main():
     print(board)
     board.bfs()
     print(board)
+
 
 main()
