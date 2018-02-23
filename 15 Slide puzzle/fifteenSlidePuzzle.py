@@ -17,11 +17,6 @@ class SlidePuzzle:
                 self.board[row][column] = i
                 i += 1
 
-    """---------- generate numbers-------------------------------------------"""
-    def generate_numbers(self):
-        numbers = list(range(1, 17))
-        random.shuffle(numbers)
-        return numbers
     """---------- print board method ----------------------------------------"""
     def print_board(self):
         string = ""
@@ -120,25 +115,86 @@ class SlidePuzzle:
             move = allowed_moves[i]
             if move != self.lastMove:
                 new_board = self.get_a_copy_of_the_board()
-                #print("move: ", move)
                 new_board.move(move)
                 new_board.path.append(move)
                 children.append(new_board)
         return children
 
+    """---------- moveUp method -------------------------------------------------------------------------------------"""
+
+    def move_up(self):
+        empty_block = self.get_blank_space_position()
+        try:
+            if empty_block[0] != 0:
+                temp = self.board[empty_block[0] - 1][empty_block[1]]  # number above the empty
+                self.board[empty_block[0] - 1][empty_block[1]] = 16  # replace # above
+                self.board[empty_block[0]][empty_block[1]] = temp  # put number where empty was
+                # updated the coordinates where the empty block is
+
+        except IndexError:
+            print("Can't go up. Empty block is in the first row")
+
+    """---------- MoveRight method ----------------------------------------------------------------------------------"""
+
+    def move_right(self):
+        empty_block = self.get_blank_space_position()
+        try:
+            if empty_block[1] != 3:
+                temp = self.board[empty_block[0]][empty_block[1] + 1]
+                self.board[empty_block[0]][empty_block[1] + 1] = 16
+                self.board[empty_block[0]][empty_block[1]] = temp
+        except IndexError:
+            print("can't go to the right. Empty block is in the rightmost column")
+
+    """---------- move_down method ----------------------------------------------------------------------------------"""
+
+    def move_down(self):
+        empty_block = self.get_blank_space_position()
+        try:
+            if empty_block[0] != 3:
+                temp = self.board[empty_block[0] + 1][empty_block[1]]
+                self.board[empty_block[0] + 1][empty_block[1]] = 16
+                self.board[empty_block[0]][empty_block[1]] = temp
+        except IndexError:
+            print("can't go down. Empty block is in the last row")
+
+    """---------- move_left method ----------------------------------------------------------------------------------"""
+
+    def move_left(self):
+        empty_block = self.get_blank_space_position()
+        try:
+            if empty_block[1] != 0:
+                temp = self.board[empty_block[0]][empty_block[1] - 1]
+                self.board[empty_block[0]][empty_block[1] - 1] = 16
+                self.board[empty_block[0]][empty_block[1]] = temp
+        except IndexError:
+            print("Can't go to the left. Empty block is in the leftmost column")
+
+    """---------- shuffle method ------------------------------------------------------------------------------------"""
+
+    def shuffle_board(self):
+        for i in range(150):
+            direction = random.randrange(1, 5)
+            if direction == 1:
+                self.move_up()
+            elif direction == 2:
+                self.move_right()
+            elif direction == 3:
+                self.move_down()
+            elif direction == 4:
+                self.move_left()
+
     """---------- Breath First Search method --------------------------------"""
     def bfs(self):
         my_file = open("result.txt", "w+")
         my_file.write("Board:\n")
-        self.numbers = self.generate_numbers()
         for i in range(4):
             for j in range(4):
-                self.board[i][j] = self.numbers.pop(0)
                 if i == 3 and j == 3:
                     my_file.write(str(self.board[i][j]))#no extra espace at the last number
                 else:
                     my_file.write(str(self.board[i][j]) + " ")
-        self.print_board()
+
         starting_state = self.get_a_copy_of_the_board()
         starting_state.path = []
         states = [starting_state]
@@ -161,6 +217,8 @@ class SlidePuzzle:
 
 def main():
     board = SlidePuzzle()
+    board.shuffle_board()
+    board.print_board()
     board.bfs()
 
 
