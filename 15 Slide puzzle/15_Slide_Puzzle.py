@@ -84,7 +84,7 @@ class SlidePuzzle:
 
     """---------- shuffle method ------------------------------------------------------------------------------------"""
     def shuffle_board(self):
-        for i in range(150):
+        for i in range(15):
             direction = random.randrange(1, 5)
             if direction == 1:
                 self.move_up()
@@ -186,6 +186,7 @@ class SlidePuzzle:
 def main():
     board = SlidePuzzle()
     board.create_board()
+    print(board)
     board.shuffle_board()
     board.print_board()
     print(board.bfs())
