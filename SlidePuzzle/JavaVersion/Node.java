@@ -21,7 +21,6 @@ public class Node {
 		}
 	}
 	
-
 /**************************************************************************************************
  * isGoardReached() will determine if this current node is the end goal of the game
  * @return
@@ -39,4 +38,19 @@ public class Node {
 		}
 		return goalReached;
 	}
+	
+/**************************************************************************************************
+ * This method will copy the originalBoard to copyTo board
+ * @param copyTo
+ * @param originalBoard
+ */
+	public void copyPuzzle(int[][]copyTo, int[][]originalBoard){
+		for(int row = 0; row < 4; row++){
+			for(int col = 0; col < 3; col++){
+				copyTo[row][col] = originalBoard[row][col];
+			}
+		}
+	}
+	
+	
 }
