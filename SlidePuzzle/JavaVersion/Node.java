@@ -102,13 +102,41 @@ public class Node {
 		}
 	}
 	
+/**************************************************************************************************
+ * moveRight will copy the given board to a childBoard, then perform the movement in the child board
+ * so we can preserve the parent
+ * @param board
+ * @param spaceRow
+ * @param spaceColumn
+ */
+	public void moveDown(int[][]board, int spaceRow, int spaceColumn){
+		if(spaceRow < 3){
+			int[][] childBoard = new int[4][4];
+			copyPuzzle(childBoard, board);
+			int temp = board[spaceRow+1][spaceColumn];
+			childBoard[spaceRow+1][spaceColumn] = childBoard[spaceRow][spaceColumn];
+			childBoard[spaceRow][spaceColumn] = temp;
+			
+			Node child = new Node(childBoard);
+			children.add(child);
+			child.parent = this;
+			child.direction = "D";
+			/*for(int i = 0; i < 4; i++){
+				for(int j = 0; j <4; j++){
+				System.out.print(childBoard[i][j] + " ");
+				}
+			System.out.println();
+			}*/
+		}
+	}
+	
 	public static void main(String[] args){
 		int[][]board = {{1,2,3,4},
 						{5,6,7,8},
 						{9,10,11,12},
 						{13,14,15,16}};
 		Node root = new Node(board);
-		root.moveRight(board, 1, 2);
+		root.moveDown(board, 1, 2);
 		System.out.println("\n"+root.children.get(0).direction);
 	}
 }
