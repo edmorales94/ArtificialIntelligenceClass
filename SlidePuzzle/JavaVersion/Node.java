@@ -93,12 +93,6 @@ public class Node {
 			children.add(child);
 			child.parent = this;
 			child.direction = "R";
-			/*for(int i = 0; i < 4; i++){
-				for(int j = 0; j <4; j++){
-				System.out.print(childBoard[i][j] + " ");
-				}
-			System.out.println();
-			}*/
 		}
 	}
 	
@@ -121,13 +115,89 @@ public class Node {
 			children.add(child);
 			child.parent = this;
 			child.direction = "D";
-			/*for(int i = 0; i < 4; i++){
-				for(int j = 0; j <4; j++){
-				System.out.print(childBoard[i][j] + " ");
-				}
-			System.out.println();
-			}*/
 		}
+	}
+	
+/**************************************************************************************************
+ * moveLeft will copy the given board to a childBoard, then perform the movement in the child board
+ * so we can preserve the parent
+ * @param board
+ * @param spaceRow
+ * @param spaceColumn
+ */
+	public void moveLeft(int[][]board, int spaceRow, int spaceColumn){
+		if(spaceColumn > 0){
+			int[][] childBoard = new int[4][4];
+			copyPuzzle(childBoard, board);
+			int temp = board[spaceRow][spaceColumn-1];
+			childBoard[spaceRow][spaceColumn-1] = childBoard[spaceRow][spaceColumn];
+			childBoard[spaceRow][spaceColumn] = temp;
+			
+			Node child = new Node(childBoard);
+			children.add(child);
+			child.parent = this;
+			child.direction = "L";
+		}
+	}
+	
+/*************************************************************************************************
+ * printPuzzle method will print the puzzle in this current node
+ */
+	public void printPuzzle(){
+		String board = "";
+		for(int i = 0; i < 4; i++){
+			for(int j = 0; j < 4; j++){
+				String element = Integer.toString(puzzleBoard[i][j]);
+				if(element.length()==1){
+					board += "  " + element;
+				}
+				else if(element.length() >1){
+					board += " " + element;
+				}
+			}
+			board += "\n";
+		}
+		System.out.print(board);
+	}
+		
+/*************************************************************************************************
+ * This method checks whether the current node is the same as another. This method will help us
+ * in the search method. We will avoid an endless loop by adding a node similar to a previous one.
+ * @param board
+ * @return
+ */
+	public boolean isSamePuzzle(int[][] board){
+		boolean isSame = true;
+		for(int i = 0; i < 4; i++){
+			for(int j = 0; j < 4; j++){
+				if(puzzleBoard[i][j] != board[i][j]){
+					return false;
+				}
+			}
+		}
+		return isSame;
+	}
+	
+/*************************************************************************************************
+ * expandNode will call the move methods, each move method creates a child node which copies its 
+ * parent's puzzle and then the movement is done to each child respectively	
+ */
+	public void expandNode(){
+		start:{
+			for(int row = 0; row < 4; row++){
+				for(int col = 0; col < 4; col++){
+					if(puzzleBoard[row][col] == 16){
+						blankSpaceCoordinates[0] = row;
+						blankSpaceCoordinates[1] = col;
+						break start;
+					}
+				}
+			}
+		}
+		moveUp(puzzleBoard, blankSpaceCoordinates[0], blankSpaceCoordinates[1]);
+		moveRight(puzzleBoard, blankSpaceCoordinates[0], blankSpaceCoordinates[1]);
+		moveDown(puzzleBoard, blankSpaceCoordinates[0], blankSpaceCoordinates[1]);
+		moveLeft(puzzleBoard, blankSpaceCoordinates[0], blankSpaceCoordinates[1]);
 	}
 	
 	public static void main(String[] args){
@@ -136,7 +206,8 @@ public class Node {
 						{9,10,11,12},
 						{13,14,15,16}};
 		Node root = new Node(board);
-		root.moveDown(board, 1, 2);
-		System.out.println("\n"+root.children.get(0).direction);
+		root.moveLeft(board, 1, 1);
+		System.out.println(root.children.get(0).direction);
+		root.children.get(0).printPuzzle();
 	}
 }
