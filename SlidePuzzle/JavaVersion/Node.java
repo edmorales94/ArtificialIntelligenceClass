@@ -189,12 +189,13 @@ public class Node {
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException{
-		int[] board = {1,3,4,8,
-						5,16,2,7,
-						9,6,10,11,
-						13,14,15,12};
+		int[] board = {1,2,3,4,
+					   5,6,7,8,
+					   9,10,11,12,
+					   13,14,16,15};
 		Node root = new Node(board);
 		SearchType use = new SearchType(root);
 		use.BFS();
+		use.DFS();
 	}
 }
