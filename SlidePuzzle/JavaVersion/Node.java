@@ -1,4 +1,6 @@
 package SlidePuzzleClasses;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class Node {
@@ -136,7 +138,7 @@ public class Node {
 /*************************************************************************************************
  * printPuzzle method will print the puzzle in this current node
  */
-	public void printPuzzle(){
+	public String printPuzzle(){
 		String board = "";
 		for(int i = 0; i < puzzleBoard.length; i++){
 			String element = Integer.toString(puzzleBoard[i]);
@@ -151,7 +153,7 @@ public class Node {
 				board += "\n";
 			}
 		}
-		System.out.print(board+"\n");
+		return board;
 	}
 		
 /*************************************************************************************************
@@ -186,13 +188,13 @@ public class Node {
 		moveLeft(puzzleBoard, blankSpaceCoordinates);
 	}
 	
-	public static void main(String[] args){
+	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException{
 		int[] board = {1,3,4,8,
 						5,16,2,7,
 						9,6,10,11,
 						13,14,15,12};
 		Node root = new Node(board);
-		SearchType use = new SearchType();
-		use.BFS(root);
+		SearchType use = new SearchType(root);
+		use.BFS();
 	}
 }
