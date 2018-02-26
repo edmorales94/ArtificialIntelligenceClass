@@ -138,7 +138,7 @@ public class Node {
 /*************************************************************************************************
  * printPuzzle method will print the puzzle in this current node
  */
-	public String printPuzzle(){
+	public void printPuzzle(){
 		String board = "";
 		for(int i = 0; i < puzzleBoard.length; i++){
 			String element = Integer.toString(puzzleBoard[i]);
@@ -153,7 +153,7 @@ public class Node {
 				board += "\n";
 			}
 		}
-		return board;
+		System.out.println(board+"\n");
 	}
 		
 /*************************************************************************************************
