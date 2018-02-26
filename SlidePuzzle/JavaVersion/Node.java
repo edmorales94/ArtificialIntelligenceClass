@@ -4,40 +4,35 @@ import java.util.ArrayList;
 public class Node {
 	Node parent = null;
 	ArrayList<Node> children = new ArrayList<Node>();
-	int[][] puzzleBoard = new int[4][4];
-	int[][] goalBoard = {{1,2,3,4},{5,6,7,8},{9,10,11,12},{13,14,15,16}};
-	int[] blankSpaceCoordinates = new int[2];
+	int[] puzzleBoard = new int[16];
+	int[] goalBoard = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+	int blankSpaceCoordinates = -1;
 	String direction = "";
 	
 /**************************************************************************************************
  * Constructor takes a board as a parameter 
  * @param board
  */
-	public Node(int[][] board){
+	public Node(int[] board){
 		//copy the board given to this node's puzzle
-		for(int row = 0; row < 4; row++){
-			for(int col = 0; col < 4; col++){
-				puzzleBoard[row][col] = board[row][col];
-			}
+		for(int index = 0; index < puzzleBoard.length; index++){
+			puzzleBoard[index] = board[index];
 		}
 	}
 	
 /**************************************************************************************************
  * isGoardReached() will determine if this current node is the end goal of the game
- * @return
+ * @return True if all the current elements in the puzzle are in ascending order from 1-16.
+ * False if the one element is out of its place.
  */
 	public boolean isGoalReached(){
-		boolean goalReached = true;
-		for(int row = 0; row < 4; row++){
-			for(int col = 0; col < 4; col++){
-				//if the current node is not the goal, we return false
-				if(this.puzzleBoard[row][col] != this.goalBoard[row][col]){
-					goalReached = false;
-					return goalReached;
-				}
+		for(int index = 0; index < puzzleBoard.length; index++){
+			//if the current node is not the goal, we return false
+			if(this.puzzleBoard[index] != this.goalBoard[index]){
+				return false;
 			}
 		}
-		return goalReached;
+		return true;
 	}
 	
 /**************************************************************************************************
@@ -45,11 +40,9 @@ public class Node {
  * @param copyTo
  * @param originalBoard
  */
-	public void copyPuzzle(int[][]copyTo, int[][]originalBoard){
-		for(int row = 0; row < 4; row++){
-			for(int col = 0; col < 4; col++){
-				copyTo[row][col] = originalBoard[row][col];
-			}
+	public void copyPuzzle(int[]copyTo, int[]originalBoard){
+		for(int index = 0; index < originalBoard.length; index++){
+			copyTo[index] = originalBoard[index];
 		}
 	}
 	
@@ -57,16 +50,15 @@ public class Node {
  * moveUp will copy the given board to a childBoard, then perform the movement in the child board
  * so we can preserve the parent
  * @param board
- * @param spaceRow
- * @param spaceColumn
+ * @param blankBlockIndex
  */
-	public void moveUp(int[][]board, int spaceRow, int spaceColumn){
-		if(spaceRow > 0){
-			int[][] childBoard = new int[4][4];
+	public void moveUp(int[] board, int blankBlockIndex){
+		if(blankBlockIndex - 4 >= 0){
+			int[] childBoard = new int[16];
 			copyPuzzle(childBoard, board);
-			int temp = board[spaceRow-1][spaceColumn];
-			childBoard[spaceRow-1][spaceColumn] = childBoard[spaceRow][spaceColumn];
-			childBoard[spaceRow][spaceColumn] = temp;
+			int temp = board[blankBlockIndex-4];
+			childBoard[blankBlockIndex-4] = childBoard[blankBlockIndex];
+			childBoard[blankBlockIndex] = temp;
 			
 			Node child = new Node(childBoard);
 			children.add(child);
@@ -82,13 +74,13 @@ public class Node {
  * @param spaceRow
  * @param spaceColumn
  */
-	public void moveRight(int[][]board, int spaceRow, int spaceColumn){
-		if(spaceColumn < 3){
-			int[][] childBoard = new int[4][4];
+	public void moveRight(int[]board, int blankBlockIndex){
+		if(blankBlockIndex%4 < 3){
+			int[] childBoard = new int[16];
 			copyPuzzle(childBoard, board);
-			int temp = board[spaceRow][spaceColumn+1];
-			childBoard[spaceRow][spaceColumn+1] = childBoard[spaceRow][spaceColumn];
-			childBoard[spaceRow][spaceColumn] = temp;
+			int temp = board[blankBlockIndex + 1];
+			childBoard[blankBlockIndex + 1] = childBoard[blankBlockIndex];
+			childBoard[blankBlockIndex] = temp;
 			
 			Node child = new Node(childBoard);
 			children.add(child);
@@ -104,13 +96,13 @@ public class Node {
  * @param spaceRow
  * @param spaceColumn
  */
-	public void moveDown(int[][]board, int spaceRow, int spaceColumn){
-		if(spaceRow < 3){
-			int[][] childBoard = new int[4][4];
+	public void moveDown(int[] board, int blankBlockIndex){
+		if(blankBlockIndex + 4 <= 15){
+			int[] childBoard = new int[16];
 			copyPuzzle(childBoard, board);
-			int temp = board[spaceRow+1][spaceColumn];
-			childBoard[spaceRow+1][spaceColumn] = childBoard[spaceRow][spaceColumn];
-			childBoard[spaceRow][spaceColumn] = temp;
+			int temp = board[blankBlockIndex + 4];
+			childBoard[blankBlockIndex + 4] = childBoard[blankBlockIndex];
+			childBoard[blankBlockIndex] = temp;
 			
 			Node child = new Node(childBoard);
 			children.add(child);
@@ -126,13 +118,13 @@ public class Node {
  * @param spaceRow
  * @param spaceColumn
  */
-	public void moveLeft(int[][]board, int spaceRow, int spaceColumn){
-		if(spaceColumn > 0){
-			int[][] childBoard = new int[4][4];
+	public void moveLeft(int[] board, int blankBlockIndex){
+		if(blankBlockIndex%4 > 0){
+			int[] childBoard = new int[16];
 			copyPuzzle(childBoard, board);
-			int temp = board[spaceRow][spaceColumn-1];
-			childBoard[spaceRow][spaceColumn-1] = childBoard[spaceRow][spaceColumn];
-			childBoard[spaceRow][spaceColumn] = temp;
+			int temp = board[blankBlockIndex-1];
+			childBoard[blankBlockIndex-1] = childBoard[blankBlockIndex];
+			childBoard[blankBlockIndex] = temp;
 			
 			Node child = new Node(childBoard);
 			children.add(child);
@@ -146,17 +138,18 @@ public class Node {
  */
 	public void printPuzzle(){
 		String board = "";
-		for(int i = 0; i < 4; i++){
-			for(int j = 0; j < 4; j++){
-				String element = Integer.toString(puzzleBoard[i][j]);
-				if(element.length()==1){
-					board += "  " + element;
-				}
-				else if(element.length() >1){
-					board += " " + element;
-				}
+		for(int i = 0; i < puzzleBoard.length; i++){
+			String element = Integer.toString(puzzleBoard[i]);
+			if(element.length()==1){
+				board += "  " + element;
 			}
-			board += "\n";
+			else if(element.length() >1){
+				board += " " + element;
+			}
+			
+			if(i %4 == 3){
+				board += "\n";
+			}
 		}
 		System.out.print(board+"\n");
 	}
@@ -167,16 +160,13 @@ public class Node {
  * @param board
  * @return
  */
-	public boolean isSamePuzzle(int[][] board){
-		boolean isSame = true;
-		for(int i = 0; i < 4; i++){
-			for(int j = 0; j < 4; j++){
-				if(puzzleBoard[i][j] != board[i][j]){
-					return false;
-				}
+	public boolean isSamePuzzle(int[] board){
+		for (int i = 0; i < puzzleBoard.length; i++) {
+			if(puzzleBoard[i] != board[i]){
+				return false;
 			}
 		}
-		return isSame;
+		return true;
 	}
 	
 /*************************************************************************************************
@@ -184,28 +174,23 @@ public class Node {
  * parent's puzzle and then the movement is done to each child respectively	
  */
 	public void expandNode(){
-		start:{
-			for(int row = 0; row < 4; row++){
-				for(int col = 0; col < 4; col++){
-					if(puzzleBoard[row][col] == 16){
-						blankSpaceCoordinates[0] = row;
-						blankSpaceCoordinates[1] = col;
-						break start;
-					}
-				}
+		for (int i = 0; i < puzzleBoard.length; i++) {
+			if(puzzleBoard[i] == 16){
+				this.blankSpaceCoordinates = i;
+				break;
 			}
 		}
-		moveUp(puzzleBoard, blankSpaceCoordinates[0], blankSpaceCoordinates[1]);
-		moveRight(puzzleBoard, blankSpaceCoordinates[0], blankSpaceCoordinates[1]);
-		moveDown(puzzleBoard, blankSpaceCoordinates[0], blankSpaceCoordinates[1]);
-		moveLeft(puzzleBoard, blankSpaceCoordinates[0], blankSpaceCoordinates[1]);
+		moveUp(puzzleBoard, blankSpaceCoordinates);
+		moveRight(puzzleBoard, blankSpaceCoordinates);
+		moveDown(puzzleBoard, blankSpaceCoordinates);
+		moveLeft(puzzleBoard, blankSpaceCoordinates);
 	}
 	
 	public static void main(String[] args){
-		int[][]board = {{1,2,3,4},
-						{5,6,7,8},
-						{9,10,12,15},
-						{13,14,11,16}};
+		int[] board = {1,3,4,8,
+						5,16,2,7,
+						9,6,10,11,
+						13,14,15,12};
 		Node root = new Node(board);
 		SearchType use = new SearchType();
 		use.BFS(root);
