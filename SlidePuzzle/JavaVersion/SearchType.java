@@ -21,8 +21,9 @@ public class SearchType {
 		return false;
 	}
 	
-/**
- * This method will receive the last child in the "graph" 
+/**************************************************************************************************
+ * This method will receive the last child in the "graph" and will get its parent, and 
+ * all of its ancestors all the way to the root node
  * @param path
  * @param goalNode
  */
