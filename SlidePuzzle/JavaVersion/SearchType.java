@@ -8,10 +8,12 @@ import java.util.Queue;
 
 public class SearchType {
 	Node rootBFS = null;
+	Node rootDFS = null;
 	PrintWriter writerForFile = null;
 	
 	public SearchType(Node root){
 		this.rootBFS = root;
+		this.rootDFS = root;
 		try {
 			writerForFile = new PrintWriter("result.txt", "UTF-8");
 			writerForFile.println("Puzzle blocks:\n");
@@ -58,12 +60,54 @@ public class SearchType {
 			path.add(current);
 		}
 	}
+	
+/**************************************************************************************************
+ *Apply the Breadth First Search method to find the path to the solution 	
+ */
+	public void DFS(){
+		LinkedList<Node> pathToSolution = new LinkedList<Node>();
+		LinkedList<Node> nodesNotVisited = new LinkedList<Node>();
+		LinkedList<Node> nodesVisited = new LinkedList<Node>();
 		
+		nodesNotVisited.push(rootDFS);
+		boolean goalFound = false;
+		start:{
+			while(nodesNotVisited.size() > 0 && !goalFound){
+				Node currentNode = nodesNotVisited.pop();
+				currentNode.expandNode();
+				for(int i = 0; i < currentNode.children.size(); i ++){
+					Node currentChild = currentNode.children.get(i);
+					if(currentChild.isGoalReached()){
+						System.out.println("Goal reached!");
+						goalFound = true;
+						tracePath(pathToSolution, currentChild);
+						break start;
+					}
+					if(!contains(nodesNotVisited, currentChild) && !contains(nodesVisited, currentChild)){
+						nodesNotVisited.push(currentChild);
+					}
+				}
+				nodesVisited.add(currentNode);
+			}
+		}
+		
+		if(pathToSolution.size() > 0){
+			writerForFile.println();
+			writerForFile.println("Depth First Search");
+			writerForFile.print("Directions to move the empty space:");
+			for(int i = pathToSolution.size()-1; i >=0; i--){
+				if(!pathToSolution.get(i).direction.equalsIgnoreCase("")){
+					//System.out.print(pathToSolution.get(i).direction+" ");
+					//pathToSolution.get(i).printPuzzle();
+					writerForFile.write(pathToSolution.get(i).direction+ " ");
+				}
+			}
+		}
+		writerForFile.close();
+	}
 /**************************************************************************************************
  * Apply the Breadth First Search method to find the path to the solution
  * @param rootBFS
- * @throws UnsupportedEncodingException 
- * @throws FileNotFoundException 
  */
 	public void BFS(){
 		LinkedList<Node> pathToSolution = new LinkedList<Node>();
@@ -103,6 +147,7 @@ public class SearchType {
 				}
 			}
 		}
-		writerForFile.close();
+		writerForFile.println();
+		writerForFile.println();
 	}
 }
