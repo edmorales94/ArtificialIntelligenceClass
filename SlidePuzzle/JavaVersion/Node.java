@@ -1,3 +1,4 @@
+package SlidePuzzleClasses;
 import java.util.ArrayList;
 
 public class Node {
@@ -157,7 +158,7 @@ public class Node {
 			}
 			board += "\n";
 		}
-		System.out.print(board);
+		System.out.print(board+"\n");
 	}
 		
 /*************************************************************************************************
@@ -203,11 +204,10 @@ public class Node {
 	public static void main(String[] args){
 		int[][]board = {{1,2,3,4},
 						{5,6,7,8},
-						{9,10,11,12},
-						{13,14,15,16}};
+						{9,10,12,15},
+						{13,14,11,16}};
 		Node root = new Node(board);
-		root.moveLeft(board, 1, 1);
-		System.out.println(root.children.get(0).direction);
-		root.children.get(0).printPuzzle();
+		SearchType use = new SearchType();
+		use.BFS(root);
 	}
 }
