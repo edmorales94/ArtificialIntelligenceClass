@@ -35,8 +35,11 @@ public class SearchType {
 			path.add(current);
 		}
 	}
-	
-	
+		
+/**************************************************************************************************
+ * Apply the Breadth First Search method to find the path to the solution
+ * @param root
+ */
 	public void BFS(Node root){
 		LinkedList<Node> pathToSolution = new LinkedList<Node>();
 		Queue<Node> nodesNotVisited = new LinkedList<Node>();
