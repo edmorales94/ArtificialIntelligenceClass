@@ -11,6 +11,7 @@ public class SearchType {
 	Node rootDFS = null;
 	PrintWriter writerForFile = null;
 	
+//---------- Constructor -------------------------------------------------------------------------	
 	public SearchType(Node root){
 		this.rootBFS = root;
 		this.rootDFS = root;
@@ -65,41 +66,51 @@ public class SearchType {
  *Apply the Depth First Search method to find the path to the solution 	
  */
 	public void DFS(){
-		LinkedList<Node> pathToSolution = new LinkedList<Node>();
-		LinkedList<Node> nodesNotVisited = new LinkedList<Node>();
-		LinkedList<Node> nodesVisited = new LinkedList<Node>();
+		LinkedList<Node> pathToSolution = new LinkedList<Node>();//list to store the ancestor nodes
+		LinkedList<Node> nodesNotVisited = new LinkedList<Node>();//nodes to visit
+		LinkedList<Node> nodesVisited = new LinkedList<Node>();//nodes visited
 		
-		nodesNotVisited.push(rootDFS);
-		boolean goalFound = false;
-		int steps = 0;
+		nodesNotVisited.push(rootDFS);//insert the root to the nodes to vist list
+		boolean goalFound = false;//variable to break the while loop
+		int steps = 0;//limit for the levels to search through
+		
 		start:{
 			while(nodesNotVisited.size() > 0 && !goalFound && steps < 500){
-				Node currentNode = nodesNotVisited.pop();
-				currentNode.expandNode();
-				for(int i = 0; i < currentNode.children.size(); i ++){
-					Node currentChild = currentNode.children.get(i);
-					if(currentChild.isGoalReached()){
+				Node currentNode = nodesNotVisited.pop();//get the current element at the front of the list
+				if(currentNode.isGoalReached()){//if the current node is the goal
+					System.out.println("Goal reached! DFS");
+					goalFound = true;//update the state
+					tracePath(pathToSolution, currentNode);//give the list so we can trace back
+					break start;//break the whole while loop
+				}
+				currentNode.expandNode();//if the current node isnt the goal, create its children
+				for(int i = 0; i < currentNode.children.size(); i ++){//go through all its children
+					Node currentChild = currentNode.children.get(i);//get each one at the time
+					if(currentChild.isGoalReached()){//if the current child is the goal
 						System.out.println("Goal reached! DFS");
-						goalFound = true;
-						tracePath(pathToSolution, currentChild);
-						break start;
+						goalFound = true;//update the condition
+						tracePath(pathToSolution, currentChild);//give the list so we can backtrack
+						break start;//break the whole while loop
 					}
+					//if the current child isn't the goal, check we haven't visited or its not waiting
 					if(!contains(nodesNotVisited, currentChild) && !contains(nodesVisited, currentChild)){
-						nodesNotVisited.push(currentChild);
+						nodesNotVisited.push(currentChild);//if it hasn't been visited or isn't waiting
+						//we added to the list of nodes to visit
 					}
 				}
-				nodesVisited.add(currentNode);
-				steps++;
+				nodesVisited.add(currentNode);//since the current node is not the goal, we marked it as visited
+				steps++;//increment the steps taken so far
 			}
 		}
 		
-		if(steps >= 500 && !goalFound){
-			writerForFile.println();
+		if(steps >= 500 && !goalFound){//if we didn't find the goal within the steps allowed
+			writerForFile.println();//we write to the file that we needed more steps
 			writerForFile.println("Depth First Search");
 			writerForFile.println(steps + " steps were not enough to find a solution");
 		}
-		else if(pathToSolution.size() > 0 && goalFound){
-			writerForFile.println();
+		
+		else if(pathToSolution.size() > 0 && goalFound){//if the goal was reached
+			writerForFile.println();//we write to the file the instructions to solve the puzzle
 			writerForFile.println("Depth First Search");
 			writerForFile.print("Directions to move the empty space:");
 			for(int i = pathToSolution.size()-1; i >=0; i--){
