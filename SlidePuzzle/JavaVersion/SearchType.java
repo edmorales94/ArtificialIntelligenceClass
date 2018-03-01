@@ -73,7 +73,7 @@ public class SearchType {
 		boolean goalFound = false;
 		int steps = 0;
 		start:{
-			while(nodesNotVisited.size() > 0 && !goalFound && steps < 12){
+			while(nodesNotVisited.size() > 0 && !goalFound && steps < 500){
 				Node currentNode = nodesNotVisited.pop();
 				currentNode.expandNode();
 				for(int i = 0; i < currentNode.children.size(); i ++){
@@ -93,8 +93,12 @@ public class SearchType {
 			}
 		}
 		
-		System.out.println("\nSteps: " + steps);
-		if(pathToSolution.size() > 0){
+		if(steps >= 500 && !goalFound){
+			writerForFile.println();
+			writerForFile.println("Depth First Search");
+			writerForFile.println(steps + " steps were not enough to find a solution");
+		}
+		else if(pathToSolution.size() > 0 && goalFound){
 			writerForFile.println();
 			writerForFile.println("Depth First Search");
 			writerForFile.print("Directions to move the empty space:");
@@ -120,7 +124,7 @@ public class SearchType {
 		nodesNotVisited.add(rootBFS);
 		boolean goalFound = false;
 		int steps = 0;
-		while(nodesNotVisited.size() > 0 && !goalFound && steps < 18){
+		while(nodesNotVisited.size() > 0 && !goalFound){
 			Node currentNode = nodesNotVisited.remove();
 			nodesVisited.add(currentNode);
 			
@@ -138,10 +142,18 @@ public class SearchType {
 			}
 			steps++;
 		}
-		System.out.println("steps: " + steps);
-		if(pathToSolution.size() > 0 && goalFound){
+		System.out.println(steps);
+		
+		if(steps >= 30 && !goalFound){
 			writerForFile.println();
 			writerForFile.println("Breadth First Search");
+			writerForFile.println(steps + " steps were not enough to find a solution");
+		}
+		
+		else if(pathToSolution.size() > 0 && goalFound){
+			writerForFile.println();
+			writerForFile.println("Breadth First Search");
+			writerForFile.println("It took: " + steps + " steps to find a solution");
 			writerForFile.print("Directions to move the empty space:");
 			for(int i = pathToSolution.size()-1; i >=0; i--){
 				if(!pathToSolution.get(i).direction.equalsIgnoreCase("")){
