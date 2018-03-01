@@ -62,7 +62,7 @@ public class SearchType {
 	}
 	
 /**************************************************************************************************
- *Apply the Breadth First Search method to find the path to the solution 	
+ *Apply the Depth First Search method to find the path to the solution 	
  */
 	public void DFS(){
 		LinkedList<Node> pathToSolution = new LinkedList<Node>();
@@ -71,14 +71,15 @@ public class SearchType {
 		
 		nodesNotVisited.push(rootDFS);
 		boolean goalFound = false;
+		int steps = 0;
 		start:{
-			while(nodesNotVisited.size() > 0 && !goalFound){
+			while(nodesNotVisited.size() > 0 && !goalFound && steps < 12){
 				Node currentNode = nodesNotVisited.pop();
 				currentNode.expandNode();
 				for(int i = 0; i < currentNode.children.size(); i ++){
 					Node currentChild = currentNode.children.get(i);
 					if(currentChild.isGoalReached()){
-						System.out.println("Goal reached!");
+						System.out.println("Goal reached! DFS");
 						goalFound = true;
 						tracePath(pathToSolution, currentChild);
 						break start;
@@ -88,9 +89,11 @@ public class SearchType {
 					}
 				}
 				nodesVisited.add(currentNode);
+				steps++;
 			}
 		}
 		
+		System.out.println("\nSteps: " + steps);
 		if(pathToSolution.size() > 0){
 			writerForFile.println();
 			writerForFile.println("Depth First Search");
@@ -116,8 +119,8 @@ public class SearchType {
 		
 		nodesNotVisited.add(rootBFS);
 		boolean goalFound = false;
-		
-		while(nodesNotVisited.size() > 0 && !goalFound){
+		int steps = 0;
+		while(nodesNotVisited.size() > 0 && !goalFound && steps < 18){
 			Node currentNode = nodesNotVisited.remove();
 			nodesVisited.add(currentNode);
 			
@@ -125,7 +128,7 @@ public class SearchType {
 			for(int i = 0; i < currentNode.children.size(); i++){
 				Node currentChild = currentNode.children.get(i);
 				if(currentChild.isGoalReached()){
-					System.out.println("Goal reached!");
+					System.out.println("Goal reached!BFS");
 					goalFound = true;
 					tracePath(pathToSolution, currentChild);
 				}
@@ -133,9 +136,10 @@ public class SearchType {
 					nodesNotVisited.add(currentChild);
 				}
 			}
+			steps++;
 		}
-		
-		if(pathToSolution.size() > 0){
+		System.out.println("steps: " + steps);
+		if(pathToSolution.size() > 0 && goalFound){
 			writerForFile.println();
 			writerForFile.println("Breadth First Search");
 			writerForFile.print("Directions to move the empty space:");
@@ -147,6 +151,7 @@ public class SearchType {
 				}
 			}
 		}
+		
 		writerForFile.println();
 		writerForFile.println();
 	}
