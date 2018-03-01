@@ -193,16 +193,10 @@ public class Node {
 					   5,6,7,8,
 					   9,10,11,12,
 					   13,14,15,16};
-		for (int i = 0; i < board.length; i++) {
-			System.out.print(board[i]+ " ");
-		}
+		
 		board = Shuffle.shuffleBoard(board);
-		System.out.println();
-		for (int i = 0; i < board.length; i++) {
-			System.out.print(board[i]+ " ");
-		}
-		System.out.println();
 		Node root = new Node(board);
+		root.printPuzzle();
 		SearchType use = new SearchType(root);
 		use.BFS();
 		use.DFS();
