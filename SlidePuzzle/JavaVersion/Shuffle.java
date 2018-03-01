@@ -178,12 +178,10 @@ public class Shuffle {
  * @param blankBlockIndex
  */
 	public static void moveLeft(int[] board, int blankBlockIndex){
-		if(blankBlockIndex%4 > 0){
-			int temp = board[blankBlockIndex-1];
-			board[blankBlockIndex-1] = board[blankBlockIndex];
-			board[blankBlockIndex] = temp;
-			lastStep = 3;
-			System.out.println("Moved left");
-		}
+		int temp = board[blankBlockIndex-1];
+		board[blankBlockIndex-1] = board[blankBlockIndex];
+		board[blankBlockIndex] = temp;
+		lastStep = 3;
+		System.out.println("Moved left");
 	}
 }
