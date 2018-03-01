@@ -165,13 +165,11 @@ public class Shuffle {
  * @param blankBlockIndex
  */
 	public static void moveDown(int [] board, int blankBlockIndex){
-		if(blankBlockIndex + 4 <= 15){
-			int temp = board[blankBlockIndex + 4];
-			board[blankBlockIndex + 4] = board[blankBlockIndex];
-			board[blankBlockIndex] = temp;
-			lastStep = 2;
-			System.out.println("Moved down");
-		}
+		int temp = board[blankBlockIndex + 4];
+		board[blankBlockIndex + 4] = board[blankBlockIndex];
+		board[blankBlockIndex] = temp;
+		lastStep = 2;
+		System.out.println("Moved down");
 	}
 	
 /*************************************************************************************************
