@@ -139,13 +139,11 @@ public class Shuffle {
  * @param blankBlockIndex
  */
 	public static void moveUp(int[] board, int blankBlockIndex){
-		if(blankBlockIndex - 4 >= 0){
-			int temp = board[blankBlockIndex-4];
-			board[blankBlockIndex-4] = board[blankBlockIndex];
-			board[blankBlockIndex] = temp;
-			lastStep = 0;
-			System.out.println("Moved up");
-		}
+		int temp = board[blankBlockIndex-4];
+		board[blankBlockIndex-4] = board[blankBlockIndex];
+		board[blankBlockIndex] = temp;
+		lastStep = 0;
+		System.out.println("Moved up");
 	}
 	
 /*************************************************************************************************
