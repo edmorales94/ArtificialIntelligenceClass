@@ -65,7 +65,7 @@ public class Node {
 			Node child = new Node(childBoard);
 			children.add(child);
 			child.parent = this;
-			child.direction = "U";
+			child.direction = "N";
 		}
 	}
 	
@@ -87,7 +87,7 @@ public class Node {
 			Node child = new Node(childBoard);
 			children.add(child);
 			child.parent = this;
-			child.direction = "R";
+			child.direction = "E";
 		}
 	}
 	
@@ -109,7 +109,7 @@ public class Node {
 			Node child = new Node(childBoard);
 			children.add(child);
 			child.parent = this;
-			child.direction = "D";
+			child.direction = "S";
 		}
 	}
 	
@@ -131,7 +131,7 @@ public class Node {
 			Node child = new Node(childBoard);
 			children.add(child);
 			child.parent = this;
-			child.direction = "L";
+			child.direction = "W";
 		}
 	}
 	
@@ -192,7 +192,16 @@ public class Node {
 		int[] board = {1,2,3,4,
 					   5,6,7,8,
 					   9,10,11,12,
-					   13,14,16,15};
+					   13,14,15,16};
+		for (int i = 0; i < board.length; i++) {
+			System.out.print(board[i]+ " ");
+		}
+		board = Shuffle.shuffleBoard(board);
+		System.out.println();
+		for (int i = 0; i < board.length; i++) {
+			System.out.print(board[i]+ " ");
+		}
+		System.out.println();
 		Node root = new Node(board);
 		SearchType use = new SearchType(root);
 		use.BFS();
