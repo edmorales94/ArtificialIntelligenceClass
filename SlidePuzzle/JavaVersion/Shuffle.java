@@ -152,13 +152,11 @@ public class Shuffle {
  * @param blankBlockIndex
  */
 	public static void moveRight(int[]board, int blankBlockIndex){
-		if(blankBlockIndex%4 < 3){
-			int temp = board[blankBlockIndex + 1];
-			board[blankBlockIndex + 1] = board[blankBlockIndex];
-			board[blankBlockIndex] = temp;
-			lastStep = 1;
-			System.out.println("Moved right");
-		}
+		int temp = board[blankBlockIndex + 1];
+		board[blankBlockIndex + 1] = board[blankBlockIndex];
+		board[blankBlockIndex] = temp;
+		lastStep = 1;
+		System.out.println("Moved right");
 	}
 	
 /*************************************************************************************************
