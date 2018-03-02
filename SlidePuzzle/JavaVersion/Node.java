@@ -10,6 +10,7 @@ public class Node {
 	int[] goalBoard = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
 	int blankSpaceCoordinates = -1;
 	String direction = "";
+	int depthLevel = 0;//used for the IDDFS method
 	
 /**************************************************************************************************
  * Constructor takes a board as a parameter 
@@ -200,5 +201,6 @@ public class Node {
 		SearchType use = new SearchType(root);
 		use.BFS();
 		use.DFS();
+		use.IDDFS();
 	}
 }
