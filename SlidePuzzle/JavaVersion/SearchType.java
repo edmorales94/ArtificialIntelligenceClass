@@ -9,12 +9,15 @@ import java.util.Queue;
 public class SearchType {
 	Node rootBFS = null;
 	Node rootDFS = null;
+	Node rootIDDFS = null;
 	PrintWriter writerForFile = null;
+	boolean isIDDFSTargetFound = false;
 	
 //---------- Constructor -------------------------------------------------------------------------	
 	public SearchType(Node root){
 		this.rootBFS = root;
 		this.rootDFS = root;
+		this.rootIDDFS = root;
 		try {
 			writerForFile = new PrintWriter("result.txt", "UTF-8");
 			writerForFile.println("Puzzle blocks:\n");
@@ -77,8 +80,9 @@ public class SearchType {
 		start:{
 			while(nodesNotVisited.size() > 0 && !goalFound && steps < 500){
 				Node currentNode = nodesNotVisited.pop();//get the current element at the front of the list
+				steps++;//increment the steps taken so far
 				if(currentNode.isGoalReached()){//if the current node is the goal
-					System.out.println("Goal reached! DFS");
+					System.out.println("DFS reached the goal");
 					goalFound = true;//update the state
 					tracePath(pathToSolution, currentNode);//give the list so we can trace back
 					break start;//break the whole while loop
@@ -87,7 +91,7 @@ public class SearchType {
 				for(int i = 0; i < currentNode.children.size(); i ++){//go through all its children
 					Node currentChild = currentNode.children.get(i);//get each one at a time
 					if(currentChild.isGoalReached()){//if the current child is the goal
-						System.out.println("Goal reached! DFS");
+						System.out.println("DFS reached the goal");
 						goalFound = true;//update the condition
 						tracePath(pathToSolution, currentChild);//give the list so we can backtrack
 						break start;//break the whole while loop
@@ -99,20 +103,23 @@ public class SearchType {
 					}
 				}
 				nodesVisited.add(currentNode);//since the current node is not the goal, we marked it as visited
-				steps++;//increment the steps taken so far
 			}
 		}
 		
 		if(steps >= 500 && !goalFound){//if we didn't find the goal within the steps allowed
+			System.out.println("DFS couldn't find a solution");
 			writerForFile.println();//we write to the file that we needed more steps
 			writerForFile.println("Depth First Search");
 			writerForFile.println(steps + " steps were not enough to find a solution");
+			writerForFile.println("Try running the program again to get a different puzzle board");
 		}
 		
 		else if(pathToSolution.size() > 0 && goalFound){//if the goal was reached
 			writerForFile.println();//we write to the file the instructions to solve the puzzle
 			writerForFile.println("Depth First Search");
+			writerForFile.println("It took: " + steps + " steps to find a solution");
 			writerForFile.print("Directions to move the empty space:");
+			writerForFile.println();
 			for(int i = pathToSolution.size()-1; i >=0; i--){
 				if(!pathToSolution.get(i).direction.equalsIgnoreCase("")){
 					//System.out.print(pathToSolution.get(i).direction+" ");
@@ -120,8 +127,8 @@ public class SearchType {
 					writerForFile.write(pathToSolution.get(i).direction+ " ");
 				}
 			}
+			writerForFile.println();
 		}
-		writerForFile.close();
 	}
 /**************************************************************************************************
  * Apply the Breadth First Search method to find the path to the solution
@@ -138,6 +145,7 @@ public class SearchType {
 		
 		while(nodesNotVisited.size() > 0 && !goalFound && steps < 1500){
 			Node currentNode = nodesNotVisited.remove();//remove the first element in the queue
+			steps++;//increment the steps taken so far
 			if(currentNode.isGoalReached()){//if the current node is the goal
 				System.out.println("Goal reached! BFS");
 				goalFound = true;//update the state
@@ -149,7 +157,7 @@ public class SearchType {
 			for(int i = 0; i < currentNode.children.size(); i++){//go through all its children
 				Node currentChild = currentNode.children.get(i);//get each one at a time
 				if(currentChild.isGoalReached()){//if the current child is the goal
-					System.out.println("Goal reached!BFS");
+					System.out.println("BFS reached the goal");
 					goalFound = true;//update the condition
 					tracePath(pathToSolution, currentChild);//give the list so we can backtrack
 				}
@@ -159,14 +167,14 @@ public class SearchType {
 					//we added to the list of nodes to visit
 				}
 			}
-			steps++;//increment the steps taken so far
 		}
-		System.out.println(steps);
 		
 		if(steps >= 1500 && !goalFound){//if we didn't find the goal within the steps allowed
+			System.out.println("BFS couldn't find a solution");
 			writerForFile.println();//we write to the file that we needed more steps
 			writerForFile.println("Breadth First Search");
 			writerForFile.println(steps + " steps were not enough to find a solution");
+			writerForFile.println("Try running the program again to get a different puzzle board");
 		}
 		
 		else if(pathToSolution.size() > 0 && goalFound){//if the goal was reached
@@ -174,6 +182,41 @@ public class SearchType {
 			writerForFile.println("Breadth First Search");
 			writerForFile.println("It took: " + steps + " steps to find a solution");
 			writerForFile.print("Directions to move the empty space:");
+			writerForFile.println();
+			for(int i = pathToSolution.size()-1; i >=0; i--){
+				if(!pathToSolution.get(i).direction.equalsIgnoreCase("")){
+					//System.out.print(pathToSolution.get(i).direction+" ");
+					//pathToSolution.get(i).printPuzzle();
+					writerForFile.write(pathToSolution.get(i).direction+ " ");
+				}
+			}
+			writerForFile.println();
+		}
+	}
+	
+	public void IDDFS(){
+		LinkedList<Node> pathToSolution = new LinkedList<Node>();//list to store the ancestor nodes
+		int depth = 0;
+		int maxDepth = 8;
+		while(!isIDDFSTargetFound && depth < maxDepth){
+			dfsForIDDFS(rootIDDFS,depth, pathToSolution);
+			depth++;
+		}
+		
+		if(!isIDDFSTargetFound){//if we didn't find the goal within the steps allowed
+			System.out.println("IDDFS couldn't find a solution");
+			writerForFile.println();//we write to the file that we needed more steps
+			writerForFile.println("Iterative Deepening Depth First Search");
+			writerForFile.println(depth + " levels were not enough to find a solution");
+			writerForFile.println("Try running the program again to get a different puzzle board");
+		}
+		
+		else if(pathToSolution.size() > 0 && isIDDFSTargetFound){//if the goal was reached
+			writerForFile.println();//we write to the file the instructions to solve the puzzle
+			writerForFile.println("Iterative Deepening Depth First Search");
+			writerForFile.println("It took: " + depth + " levels to find a solution");
+			writerForFile.print("Directions to move the empty space:");
+			writerForFile.println();
 			for(int i = pathToSolution.size()-1; i >=0; i--){
 				if(!pathToSolution.get(i).direction.equalsIgnoreCase("")){
 					//System.out.print(pathToSolution.get(i).direction+" ");
@@ -182,6 +225,34 @@ public class SearchType {
 				}
 			}
 		}
-		writerForFile.println();
+		writerForFile.close();
+	}
+
+	private void dfsForIDDFS(Node rootIDDFS, int depth, LinkedList<Node> path) {
+		LinkedList<Node> stack = new LinkedList<Node>();
+		rootIDDFS.depthLevel = 0;
+		
+		stack.push(rootIDDFS);
+		
+		start:{
+			while(!stack.isEmpty()){
+				Node currentNode = stack.pop();
+				if(currentNode.isGoalReached()){
+					System.out.println("IDDFS reached the goal");
+					isIDDFSTargetFound = true;//update the state
+					tracePath(path, currentNode);//give the list so we can trace back
+					break start;//break the whole while loop
+				}
+				if(currentNode.depthLevel >= depth){
+					continue;
+				}
+				currentNode.expandNode();
+				for(int i = 0; i < currentNode.children.size(); i++){
+					Node currentChild = currentNode.children.get(i);
+					currentChild.depthLevel = currentNode.depthLevel + 1;
+					stack.push(currentChild);
+				}
+			}
+		}
 	}
 }
