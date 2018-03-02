@@ -112,7 +112,7 @@ public class Shuffle {
  */
 	public static int[] shuffleBoard(int[] board){
 		Random rnd = new Random();
-		for(int i = 0; i < 10; i++){
+		for(int i = 0; i < 7; i++){
 			findIllegalMovements(board);//exclude the movements we shouldn't consider
 			int direction = generateRandom(rnd, 0, 3, exclude);//get a random number from 0 to 3 
 														//excluding the movements in the list
@@ -143,7 +143,7 @@ public class Shuffle {
 		board[blankBlockIndex-4] = board[blankBlockIndex];
 		board[blankBlockIndex] = temp;
 		lastStep = 0;
-		System.out.println("Moved up");
+		//System.out.println("Moved up");
 	}
 	
 /*************************************************************************************************
@@ -156,7 +156,7 @@ public class Shuffle {
 		board[blankBlockIndex + 1] = board[blankBlockIndex];
 		board[blankBlockIndex] = temp;
 		lastStep = 1;
-		System.out.println("Moved right");
+		//System.out.println("Moved right");
 	}
 	
 /*************************************************************************************************
@@ -169,7 +169,7 @@ public class Shuffle {
 		board[blankBlockIndex + 4] = board[blankBlockIndex];
 		board[blankBlockIndex] = temp;
 		lastStep = 2;
-		System.out.println("Moved down");
+		//System.out.println("Moved down");
 	}
 	
 /*************************************************************************************************
@@ -182,6 +182,6 @@ public class Shuffle {
 		board[blankBlockIndex-1] = board[blankBlockIndex];
 		board[blankBlockIndex] = temp;
 		lastStep = 3;
-		System.out.println("Moved left");
+		//System.out.println("Moved left");
 	}
 }
