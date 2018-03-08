@@ -196,10 +196,10 @@ public class Node {
 					   9,10,11,12,
 					   13,14,15,16};
 		
-		//board = Shuffle.shuffleBoard(board);
+		board = Shuffle.shuffleBoard(board);
 		Node root = new Node(board);
 		root.printPuzzle();
-		//SearchType use = new SearchType(root);
-		//use.BFS();
+		SearchType use = new SearchType(root);
+		use.BFS();
 	}
 }
