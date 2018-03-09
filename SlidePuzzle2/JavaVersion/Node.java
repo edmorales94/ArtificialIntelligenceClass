@@ -219,6 +219,100 @@ public class Node {
 		}
 		return 0;
 	}
+	
+/************************************************************************************************
+ * This method will add all the individual distances together and return the final Manhattan
+ * distance of the whole current puzzle
+ * @param thePuzzle
+ * @return
+ */
+	public int manhattanDistance(int[] thePuzzle){
+		int puzzleDistance = 0;
+		for(int i = 0; i < thePuzzle.length; i++){
+			int currentTile = thePuzzle[i];
+			int itsRow = -1;
+			int itsColumn = -1;
+			if(i%4 == 0){//first column
+				if(i == 0){
+					itsRow = 0;
+					itsColumn = 0;
+				}
+				else if(i == 4){
+					itsRow = 1;
+					itsColumn = 0;
+				}
+				else if(i == 8){
+					itsRow = 2;
+					itsColumn = 0;
+				}
+				else if( i == 12){
+					itsRow = 3;
+					itsColumn = 0;
+				}
+			}
+			
+			else if(i%4 == 1){//second column
+				if(i == 1){
+					itsRow = 0;
+					itsColumn = 1;
+				}
+				else if(i == 5){
+					itsRow = 1;
+					itsColumn = 1;
+				}
+				else if( i == 9){
+					itsRow = 2;
+					itsColumn = 1;
+				}
+				else if(i == 13){
+					itsRow = 3;
+					itsColumn = 1;
+				}
+			}
+			
+			else if(i%4 == 2){//third column
+				if(i == 2){
+					itsRow = 0;
+					itsColumn = 2;
+				}
+				else if(i == 6){
+					itsRow = 1;
+					itsColumn = 2;
+				}
+				else if( i == 10){
+					itsRow = 2;
+					itsColumn = 2;
+				}
+				else if(i == 14){
+					itsRow = 3;
+					itsColumn = 2;
+				}
+			}
+			
+			else if(i%4 == 3){//forth column
+				if(i == 3){
+					itsRow = 0;
+					itsColumn = 3;
+				}
+				else if(i == 7){
+					itsRow = 1;
+					itsColumn = 3;
+				}
+				else if( i == 11){
+					itsRow = 2;
+					itsColumn = 3;
+				}
+				else if(i == 15){
+					itsRow = 3;
+					itsColumn = 3;
+				}
+			}	
+			puzzleDistance += individualTileDistance(currentTile, itsRow, itsColumn);
+		}
+		return puzzleDistance;
+	}
+	
+//---------- main method ------------------------------------------------------------------------
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException{
 		int[] board = {1,2,3,4,
 					   5,6,7,8,
