@@ -12,6 +12,7 @@ public class Node {
 	int blankSpaceCoordinates = -1;
 	String direction = "";
 	int depthLevel = 0;//used for the IDDFS method
+	int nodeWeight = 0;
 	
 /**************************************************************************************************
  * Constructor takes a board as a parameter 
@@ -190,6 +191,34 @@ public class Node {
 		moveLeft(puzzleBoard, blankSpaceCoordinates);
 	}
 	
+/************************************************************************************************
+ * This method will count how many positions a tile is away from its goal position. We ignore
+ * the empty space(16)
+ * @param tile
+ * @param itsRow
+ * @param itsCol
+ * @return
+ */
+	public int individualTileDistance(int tile, int itsRow, int itsCol){
+		if(tile != 16){
+			int row = -1;
+			int col = -1;
+			int[][] goal = {{1,2,3,4},{5,6,7,8},{9,10,11,12},{13,14,15,16}};
+			start:{
+				for(int i = 0; i < 4; i++){
+					for(int j = 0; j < 4; j++){
+						if(goal[i][j] == tile){
+							row = i;
+							col = j;
+							break start;
+						}
+					}
+				}
+			}
+			return Math.abs(row - itsRow) + Math.abs(col - itsCol);
+		}
+		return 0;
+	}
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException{
 		int[] board = {1,2,3,4,
 					   5,6,7,8,
@@ -199,7 +228,7 @@ public class Node {
 		board = Shuffle.shuffleBoard(board);
 		Node root = new Node(board);
 		root.printPuzzle();
-		SearchType use = new SearchType(root);
-		use.BFS();
+		//SearchType use = new SearchType(root);
+		//use.BFS();
 	}
 }
