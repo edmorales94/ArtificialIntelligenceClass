@@ -334,7 +334,8 @@ public class Node {
 		board = Shuffle.shuffleBoard(board);
 		Node root = new Node(board);
 		root.printPuzzle();
-		//SearchType use = new SearchType(root);
-		//use.BFS();
+		SearchType use = new SearchType(root);
+		use.BFS();
+		use.AStarSearch();
 	}
 }
