@@ -12,7 +12,7 @@ public class Node {
 	int blankSpaceCoordinates = -1;
 	String direction = "";
 	int depthLevel = 0;//used for the IDDFS method
-	int nodeWeight = 0;
+	int nodeScore = 0;
 	
 /**************************************************************************************************
  * Constructor takes a board as a parameter 
@@ -66,9 +66,12 @@ public class Node {
 			childBoard[blankBlockIndex] = temp;
 			
 			Node child = new Node(childBoard);
-			children.add(child);
 			child.parent = this;
 			child.direction = "N";
+			//f(n) = g(n) + h(n) -> g(n) = distanceFromPreviousNode = 1
+			//h(n) = manhattan distance of each node 
+			child.nodeScore = 1 + manhattanDistance(child.puzzleBoard);
+			children.add(child);
 		}
 	}
 	
@@ -88,10 +91,13 @@ public class Node {
 			childBoard[blankBlockIndex] = temp;
 			
 			Node child = new Node(childBoard);
-			children.add(child);
 			child.parent = this;
 			child.direction = "E";
-		}
+			//f(n) = g(n) + h(n) -> g(n) = distanceFromPreviousNode = 1
+			//h(n) = manhattan distance of each node 
+			child.nodeScore = 1 + manhattanDistance(child.puzzleBoard);
+			children.add(child);
+			}
 	}
 	
 /**************************************************************************************************
@@ -110,9 +116,12 @@ public class Node {
 			childBoard[blankBlockIndex] = temp;
 			
 			Node child = new Node(childBoard);
-			children.add(child);
 			child.parent = this;
 			child.direction = "S";
+			//f(n) = g(n) + h(n) -> g(n) = distanceFromPreviousNode = 1
+			//h(n) = manhattan distance of each node 
+			child.nodeScore = 1 + manhattanDistance(child.puzzleBoard);
+			children.add(child);
 		}
 	}
 	
@@ -132,9 +141,12 @@ public class Node {
 			childBoard[blankBlockIndex] = temp;
 			
 			Node child = new Node(childBoard);
-			children.add(child);
 			child.parent = this;
 			child.direction = "W";
+			//f(n) = g(n) + h(n) -> g(n) = distanceFromPreviousNode = 1
+			//h(n) = manhattan distance of each node 
+			child.nodeScore = 1 + manhattanDistance(child.puzzleBoard);
+			children.add(child);
 		}
 	}
 	
