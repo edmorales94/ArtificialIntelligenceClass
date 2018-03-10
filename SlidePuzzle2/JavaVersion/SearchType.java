@@ -131,23 +131,23 @@ public class SearchType {
 	}
 	
 	
-	/**
-	 * 
-	 */
+/************************************************************************************************
+ * A* method uses a priority queue to explore the node with the least cost
+ */
 	public void AStarSearch(){
 		LinkedList<Node> pathToSolution = new LinkedList<Node>();//list to store the ancestor nodes
-		LinkedList<Node> nodesVisited = new LinkedList<Node>();//nodes visited
 		Comparator<Node> comparator = new Comparator<Node>(){
 			@Override
 			public int compare(Node node1, Node node2) {
 				return (int)(node1.nodeScore - node2.nodeScore);
 			}
 		};
-		PriorityQueue<Node> nodesNotVisited = new PriorityQueue<Node>(100, comparator);
-		
+		PriorityQueue<Node> nodesNotVisited = new PriorityQueue<Node>(30,comparator);//nodes visited
+		LinkedList<Node> nodesVisited = new LinkedList<Node>();
+		starNode.nodeScore = starNode.manhattanDistance(starNode.puzzleBoard);
 		nodesNotVisited.add(starNode);//insert the root to the nodes to visit list
 		boolean goalFound = false;//variable to break the while loop
-		int maxGraphDepth = 15;
+		int maxGraphDepth = 20;
 		int currentDepth = 0;
 		int nodesGenerated = 1;//the root is the default node
 		start:{
@@ -180,7 +180,7 @@ public class SearchType {
 		}
 		
 		if(currentDepth >= maxGraphDepth && !goalFound){//if we didn't find the goal within the steps allowed
-			System.out.println("A* Search couldn't find a solution");
+			System.out.print("A* Search couldn't find a solution");
 			writerForFile.println();//we write to the file that we needed more steps
 			writerForFile.println("A* Search");
 			writerForFile.println(currentDepth + " levels depth was not enough to find a solution");
@@ -201,12 +201,16 @@ public class SearchType {
 					writerForFile.write(pathToSolution.get(i).direction+ " ");
 				}
 			}
-			writerForFile.println();
 		}
 		writerForFile.close();
 	}
 	
-
+/************************************************************************************************
+ * This method checks if the priority contains the currentchild
+ * @param notExplored
+ * @param currentChild
+ * @return True if the child is in the queue. False otherwise.
+ */
 	private boolean contains(PriorityQueue<Node> notExplored, Node currentChild) {
 		PriorityQueue<Node> temp = notExplored;
 		Node tempNode = null;
