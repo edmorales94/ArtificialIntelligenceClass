@@ -112,7 +112,7 @@ public class Shuffle {
  */
 	public static int[] shuffleBoard(int[] board){
 		Random rnd = new Random();
-		for(int i = 0; i < 10; i++){
+		for(int i = 0; i < 5; i++){
 			findIllegalMovements(board);//exclude the movements we shouldn't consider
 			int direction = generateRandom(rnd, 0, 3, exclude);//get a random number from 0 to 3 
 														//excluding the movements in the list
