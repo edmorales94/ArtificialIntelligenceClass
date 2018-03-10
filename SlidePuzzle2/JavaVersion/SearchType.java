@@ -4,11 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.Set;
 
 public class SearchType {
 	Node rootBFS = null;
@@ -167,7 +165,11 @@ public class SearchType {
 				for(int i = 0; i < currentNode.children.size(); i++){//go through all its children
 					Node currentChild = currentNode.children.get(i);//get each one at a time
 					//if the currentChild hasn't visited or it's not waiting
-					if(!contains(nodesVisited, currentChild)&& !contains(nodesNotVisited, currentChild)){
+					if(contains(nodesVisited, currentChild) && currentNode.nodeScore >= currentChild.nodeScore){
+						continue;
+					}
+					
+					else if(!contains(nodesVisited, currentChild)&& !contains(nodesNotVisited, currentChild)){
 						currentChild.depthLevel = currentNode.depthLevel + 1;
 						nodesGenerated++;
 						nodesNotVisited.add(currentChild);//if it hasn't been visited or isn't waiting
@@ -204,81 +206,6 @@ public class SearchType {
 		writerForFile.close();
 	}
 	
-/**
- * AStar method
- */
-	public void AStarSearch2(){
-		LinkedList<Node> pathToSolution = new LinkedList<Node>();
-		Set<Node> explored = new HashSet<Node>();
-		
-		Comparator<Node> comparator = new Comparator<Node>(){
-			@Override
-			public int compare(Node node1, Node node2) {
-				return (int)(node1.nodeScore - node2.nodeScore);
-			}
-		};
-		PriorityQueue<Node> notExplored = new PriorityQueue<Node>(100, comparator);
-		starNode.nodeScore = starNode.manhattanDistance(starNode.puzzleBoard);
-		notExplored.add(starNode);
-		boolean found = false;
-		int maxGraphDepth = 15;
-		int currentDepth = 0;
-		int nodesGenerated = 1;//the root is the default node
-		
-		while(notExplored.size() > 0 && !found && currentDepth <= maxGraphDepth){
-			Node currentNode = notExplored.poll();
-			currentDepth = currentNode.depthLevel;
-			explored.add(currentNode);
-			
-			if(currentNode.isGoalReached()){
-				System.out.println("Goal reached! Astar");
-				found = true;//update the state
-				tracePath(pathToSolution, currentNode);//give the list so we can trace back
-				break;//break the whole while loop
-			}
-			
-			currentNode.expandNode();//and create its children
-			for(int i = 0; i < currentNode.children.size(); i++){//go through all its children
-				Node currentChild = currentNode.children.get(i);//get each one at a time
-				if(explored.contains(currentChild) && currentNode.nodeScore >= currentChild.nodeScore){
-					continue;
-				}
-				else if(!contains(notExplored, currentChild)|| currentNode.nodeScore < currentChild.nodeScore){
-					if(notExplored.contains(currentChild)){
-						notExplored.remove(currentChild);
-					}
-					notExplored.add(currentChild);
-					nodesGenerated++;
-				}
-			}
-		}
-		
-		if(currentDepth >= maxGraphDepth && !found){//if we didn't find the goal within the steps allowed
-			System.out.println("A* Search couldn't find a solution");
-			writerForFile.println();//we write to the file that we needed more steps
-			writerForFile.println("A* Search");
-			writerForFile.println(currentDepth + " levels depth was not enough to find a solution");
-			writerForFile.println("Try running the program again to get a different puzzle board");
-		}
-		
-		else if(pathToSolution.size() > 0 && found){//if the goal was reached
-			writerForFile.println();//we write to the file the instructions to solve the puzzle
-			writerForFile.println("A Star Search");
-			writerForFile.println("It took: " + currentDepth + " levels depth to find a solution");
-			writerForFile.println("Nodes generated: " + nodesGenerated);
-			writerForFile.print("Directions to move the empty space:");
-			writerForFile.println();
-			for(int i = pathToSolution.size()-1; i >=0; i--){
-				if(!pathToSolution.get(i).direction.equalsIgnoreCase("")){
-					System.out.print(pathToSolution.get(i).direction+" ");
-					pathToSolution.get(i).printPuzzle();
-					writerForFile.write(pathToSolution.get(i).direction+ " ");
-				}
-			}
-			writerForFile.println();
-		}
-		writerForFile.close();
-	}
 
 	private boolean contains(PriorityQueue<Node> notExplored, Node currentChild) {
 		PriorityQueue<Node> temp = notExplored;
