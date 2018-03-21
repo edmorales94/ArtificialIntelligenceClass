@@ -14,4 +14,11 @@ public class Point {
 		this.x = x;
 		this.y = y;
 	}
+	
+/*********************************************************************************************************************
+ * Display the coordinates of the point
+ */
+	public String toString() {
+		return "[" + x + ", " + y + "]";
+	}
 }
