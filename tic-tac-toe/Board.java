@@ -123,14 +123,16 @@ public class Board {
 		int max = Integer.MIN_VALUE;
 		
 		for (Point point : availableMoves) {//get a list of available moves
-			if(turn == player_X) {//if it's the computer turns
+			
+			//---------- code for the X player ---------------------------------------------------------------------
+			if(turn == player_X){ //if it's the computer turns
 				placeAMove(point, player_X);//mark the cell with the X
 				int currentScore = minmax(depth + 1, player_O);//do a recursion and check the next movement for O
 				max = Math.max(currentScore, max);//update max with the highest int
 				if(depth == 0) {
-					System.out.println("Computer score for position " + point + " = " + currentScore);
+					//System.out.println("Computer score for position " + point + " = " + currentScore);
 				}
-				if(currentScore >= 0) {
+				if(currentScore >= 0) {// we can win or get a draw 
 					if(depth == 0) {
 						computerMove = point;
 					}
@@ -150,6 +152,7 @@ public class Board {
 			}
 			
 			
+			//---------- code for the O player ---------------------------------------------------------------------
 			else if(turn == player_O) {
 				placeAMove(point, player_O);//place a possible move
 				int currentScore = minmax(depth + 1, player_X);//get the minmax for the future movements of X
