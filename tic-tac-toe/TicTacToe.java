@@ -15,9 +15,10 @@ public class TicTacToe {
 		int choice = keyboard.nextInt();
 		
 		if(choice == 1) {//if the computer goes first, choose a random cell
-			Point p = new Point(random.nextInt(3), random.nextInt(3));
-			board.placeAMove(p, board.player_X);
-			board.displayBoard();
+			board.minmax(0, board.player_X);//get the best movement for the computer
+			System.out.println("Computer chose position: " + board.computerMove);
+			board.placeAMove(board.computerMove, board.player_X);//place the computer's move
+			board.displayBoard();	
 		}
 		
 		while(!board.isGameOver()) {//while the game hasn't ended
