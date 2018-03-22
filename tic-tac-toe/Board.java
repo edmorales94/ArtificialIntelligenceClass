@@ -9,8 +9,9 @@ public class Board {
 	public final int player_X = 1;
 	public final int player_O = 2;
 	
-	private int[][] board = new int[3][3];
+	public int[][] board = new int[3][3];
 	public Point computerMove;
+	public Point userMove;
 	
 /********************************************************************************************************************
  * This method checks the diagonals, rows, and columns
@@ -101,7 +102,7 @@ public class Board {
 	
 	
 /*******************************************************************************************************************
- * This method will run recursively and play each players role
+ * This method will run recursively to get the best move for the computer
  * @param depth
  * @param turn
  * @return The max value if it was the computer's turn, 
@@ -166,5 +167,74 @@ public class Board {
 			board[point.x][point.y] = no_player;//cleaning the board again once everything is done
 		}
 		return turn == player_X ? max : min;//if it's player X's turn, return the max. Else, return the min
+	}
+	
+
+/*******************************************************************************************************************
+ * This method will run recursively to get the best move for the user
+ * @param depth
+ * @param turn
+ * @return
+ */
+	public int minmaxUser(int depth, int turn) {
+		if(hasThisPlayerWon(player_X)) {
+			return -1;
+		}
+		if(hasThisPlayerWon(player_O)) {
+			return 1;
+		}
+		
+		List<Point> availableMoves = getAvailableBlocks();
+		if(availableMoves.isEmpty()) {
+			return 0;//the board is full, game over
+		}
+		
+		int min = Integer.MAX_VALUE;
+		int max = Integer.MIN_VALUE;
+		
+		for (Point point : availableMoves) {//get a list of available moves
+			
+			//---------- code for the O player ---------------------------------------------------------------------
+			if(turn == player_O){ //if it's the user's turns
+				placeAMove(point, player_O);//mark the cell with the O
+				int currentScore = minmaxUser(depth + 1, player_X);//do a recursion and check the next movement for X
+				max = Math.max(currentScore, max);//update max with the highest int
+				if(depth == 0) {
+					//System.out.println("User score for position " + point + " = " + currentScore);
+				}
+				if(currentScore >= 0) {// we can win or get a draw 
+					if(depth == 0) {
+						userMove = point;
+					}
+				}
+				
+				if(currentScore == 1) {//This player O has won 
+					board[point.x][point.y] = no_player;//clean the board
+					break;//stop exploring movements
+				}
+				
+				//if there are no good movements, just take the last available move
+				if(point.equals(availableMoves.get(availableMoves.size()-1)) && max < 0) {
+					if(depth == 0) {
+						userMove = point;
+					}
+				}
+			}
+			
+			
+			//---------- code for the X player ---------------------------------------------------------------------
+			else if(turn == player_X) {
+				placeAMove(point, player_X);//place a possible move
+				int currentScore = minmaxUser(depth + 1, player_O);//get the minmax for the future movements of O
+				min = Math.min(currentScore, min);//get the smallest value of those two
+				
+				if(min == -1) {//This player X has won
+					board[point.x][point.y] = no_player;//clean the board
+					break;//stop exploring movements
+				}
+			}
+			board[point.x][point.y] = no_player;//cleaning the board again once everything is done
+		}
+		return turn == player_O ? max : min;//if it's player X's turn, return the max. Else, return the min
 	}
 }
