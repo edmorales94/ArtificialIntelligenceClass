@@ -61,4 +61,20 @@ public class Board {
 	public boolean isGameOver() {
 		return hasThisPlayerWon(player_X) || hasThisPlayerWon(player_O) || getAvailableBlocks().isEmpty();
 	}
+	
+	
+/********************************************************************************************************************
+ * This method will put the player's move into the board
+ * @param point
+ * @param player
+ * @return True if the block where we want to place our move is available. False if is occupied.
+ */
+	public boolean placeAMove(Point point, int player) {
+		if(board[point.x][point.y] != no_player) {//if the cell is not available
+			return false;
+		}
+		
+		board[point.x][point.y] = player;//the cell was available
+		return true;
+	}
 }
