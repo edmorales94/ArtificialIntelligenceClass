@@ -122,11 +122,11 @@ public class Board {
 		int min = Integer.MAX_VALUE;
 		int max = Integer.MIN_VALUE;
 		
-		for (Point point : availableMoves) {
-			if(turn == player_X) {
-				placeAMove(point, player_X);
-				int currentScore = minmax(depth + 1, player_O);
-				max = Math.max(currentScore, max);
+		for (Point point : availableMoves) {//get a list of available moves
+			if(turn == player_X) {//if it's the computer turns
+				placeAMove(point, player_X);//mark the cell with the X
+				int currentScore = minmax(depth + 1, player_O);//do a recursion and check the next movement for O
+				max = Math.max(currentScore, max);//update max with the highest int
 				if(depth == 0) {
 					System.out.println("Computer score for position " + point + " = " + currentScore);
 				}
@@ -136,10 +136,12 @@ public class Board {
 					}
 				}
 				
-				if(currentScore == 1) {
-					board[point.x][point.y] = no_player;
-					break;
+				if(currentScore == 1) {//This player X has won 
+					board[point.x][point.y] = no_player;//clean the board
+					break;//stop exploring movements
 				}
+				
+				//if there are no good movements, just take the last available move
 				if(point.equals(availableMoves.get(availableMoves.size()-1)) && max < 0) {
 					if(depth == 0) {
 						computerMove = point;
@@ -149,17 +151,17 @@ public class Board {
 			
 			
 			else if(turn == player_O) {
-				placeAMove(point, player_O);
-				int currentScore = minmax(depth + 1, player_X);
-				min = Math.min(currentScore, min);
+				placeAMove(point, player_O);//place a possible move
+				int currentScore = minmax(depth + 1, player_X);//get the minmax for the future movements of X
+				min = Math.min(currentScore, min);//get the smallest value of those two
 				
-				if(min == -1) {
-					board[point.x][point.y] = no_player;
-					break;
+				if(min == -1) {//This player O has won
+					board[point.x][point.y] = no_player;//clean the board
+					break;//stop exploring movements
 				}
 			}
-			board[point.x][point.y] = no_player;
+			board[point.x][point.y] = no_player;//cleaning the board again once everything is done
 		}
-		return turn == player_X ? max : min;
+		return turn == player_X ? max : min;//if it's player X's turn, return the max. Else, return the min
 	}
 }
