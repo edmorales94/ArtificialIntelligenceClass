@@ -77,4 +77,26 @@ public class Board {
 		board[point.x][point.y] = player;//the cell was available
 		return true;
 	}
+	
+	
+/********************************************************************************************************************
+ * This method will print out the value(X or O) of the board
+ */
+	public void displayBoard() {
+		System.out.println();
+		for(int row = 0; row < 3; row++) {
+			for(int col = 0; col < 3; col++) {
+				String value = "?";
+				if(board[row][col] == player_X) {
+					value = "X";
+				}
+				else if(board[row][col] == player_O) {
+					value = "O";
+				}
+				System.out.println(value + " ");
+			}
+			System.out.println();
+		}
+		System.out.println();
+	}
 }
