@@ -12,33 +12,47 @@ public class TicTacToe {
 		Scanner keyboard = new Scanner(System.in);
 		board.displayBoard();
 		System.out.println("Select turn:\n#1 computer goes first(player X) or #2 user goes first(player O)");
-		
 		int choice = keyboard.nextInt();
 		
-		if(choice == 1) {
+		if(choice == 1) {//if the computer goes first, choose a random cell
 			Point p = new Point(random.nextInt(3), random.nextInt(3));
 			board.placeAMove(p, board.player_X);
 			board.displayBoard();
 		}
 		
-		while(!board.isGameOver()) {
-			boolean isMoveAllowed = true;
+		while(!board.isGameOver()) {//while the game hasn't ended
+			boolean isMoveAllowed = true;//this will make sure we don't overlap a cell
 			do {
-				if(!isMoveAllowed) {
+				if(!isMoveAllowed) {//the cell was used already
 					System.out.println("Cell is already occupied");
 				}
-				System.out.println("Your turn: ");
-				Point userMove = new Point(keyboard.nextInt(), keyboard.nextInt());
-				isMoveAllowed = board.placeAMove(userMove, board.player_O);
+				System.out.println("Your turn: ");//it's the users turn now
+				Point userMove = new Point(keyboard.nextInt(), keyboard.nextInt());//get the coordinates from the user
+				isMoveAllowed = board.placeAMove(userMove, board.player_O);//if move was successful, we return true
 			}
-			while(!isMoveAllowed);
-			board.displayBoard();
-			if(board.isGameOver()) {
-				break;
+			while(!isMoveAllowed);//if user's movement is not valid, ask for the coordinates again
+			
+			board.displayBoard();//print the board after a successful movement
+			if(board.isGameOver()) {//if the game is over
+				break;//there's no need to get a movement from the computer
 			}
 			
-			board.minmax(0, board.player_X);
+			board.minmax(0, board.player_X);//get the best movement for the computer
 			System.out.println("Computer chose position: " + board.computerMove);
+			board.placeAMove(board.computerMove, board.player_X);//place the computer's move
+			board.displayBoard();	
+		}//game is over 
+		
+		
+		if(board.hasThisPlayerWon(board.player_X)) {
+			System.out.println("You lost");
 		}
+		else if(board.hasThisPlayerWon(board.player_O)){
+			System.out.println("You won!");
+		}
+		else {
+			System.out.println("It was a draw");
+		}
+		keyboard.close();
 	}
 }
