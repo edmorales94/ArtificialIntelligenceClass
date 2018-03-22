@@ -83,7 +83,6 @@ public class Board {
  * This method will print out the value(X or O) of the board
  */
 	public void displayBoard() {
-		System.out.println();
 		for(int row = 0; row < 3; row++) {
 			for(int col = 0; col < 3; col++) {
 				String value = "?";
@@ -93,7 +92,7 @@ public class Board {
 				else if(board[row][col] == player_O) {
 					value = "O";
 				}
-				System.out.println(value + " ");
+				System.out.print(value + " ");
 			}
 			System.out.println();
 		}
