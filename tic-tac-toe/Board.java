@@ -99,4 +99,68 @@ public class Board {
 		}
 		System.out.println();
 	}
+	
+	
+/*******************************************************************************************************************
+ * This method will run recursively and play each players role
+ * @param depth
+ * @param turn
+ * @return The max value if it was the computer's turn, 
+ */
+	public int minmax(int depth, int turn) {
+		if(hasThisPlayerWon(player_X)) {
+			return 1;
+		}
+		if(hasThisPlayerWon(player_O)) {
+			return -1;
+		}
+		
+		List<Point> availableMoves = getAvailableBlocks();
+		if(availableMoves.isEmpty()) {
+			return 0;//the board is full, game over
+		}
+		
+		int min = Integer.MAX_VALUE;
+		int max = Integer.MIN_VALUE;
+		
+		for (Point point : availableMoves) {
+			if(turn == player_X) {
+				placeAMove(point, player_X);
+				int currentScore = minmax(depth + 1, player_O);
+				max = Math.max(currentScore, max);
+				if(depth == 0) {
+					System.out.println("Computer score for position " + point + " = " + currentScore);
+				}
+				if(currentScore >= 0) {
+					if(depth == 0) {
+						computerMove = point;
+					}
+				}
+				
+				if(currentScore == 1) {
+					board[point.x][point.y] = no_player;
+					break;
+				}
+				if(point.equals(availableMoves.get(availableMoves.size()-1)) && max < 0) {
+					if(depth == 0) {
+						computerMove = point;
+					}
+				}
+			}
+			
+			
+			else if(turn == player_O) {
+				placeAMove(point, player_O);
+				int currentScore = minmax(depth + 1, player_X);
+				min = Math.min(currentScore, min);
+				
+				if(min == -1) {
+					board[point.x][point.y] = no_player;
+					break;
+				}
+			}
+			board[point.x][point.y] = no_player;
+		}
+		return turn == player_X ? max : min;
+	}
 }
