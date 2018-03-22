@@ -5,9 +5,9 @@ import java.util.List;
 
 public class Board {
 	
-	public static final int no_player = 0;
-	public static final int player_X = 1;
-	public static final int player_O = 2;
+	public final int no_player = 0;
+	public final int player_X = 1;
+	public final int player_O = 2;
 	
 	private int[][] board = new int[3][3];
 	public Point computerMove;
